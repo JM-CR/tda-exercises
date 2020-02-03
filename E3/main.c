@@ -27,7 +27,15 @@ int main( int argc, char *argv[] ) {
         }
 
     // Initialize from console
-    
+    if ( argc > 1 ) 
+        for ( int i = 1; i <= argc - 1; ++i ) {
+            if ( !validInput(*argv[i]) ) {
+                fprintf(stderr, "\nInvalid characters from arguments.\n\n");
+                exit(EXIT_FAILURE);
+            } else {
+                setValue(*argv[i], i - 1);
+            }
+        }
 
     // Print menu
 
