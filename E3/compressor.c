@@ -109,6 +109,6 @@ char getValue( int position ) {
  * @param second Position of the second element.
  * @return Sum's result.
  */
-uint32_t sum( int first, int second ) {
-    return 1;
+uint32_t sumFromBuffer( int first, int second ) {
+    return getValue(first) + getValue(second);
 }

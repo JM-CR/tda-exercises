@@ -18,4 +18,4 @@
 bool validInput( unsigned char element );
 void setValue( unsigned char element, int position );
 char getValue( int position );
-uint32_t sum( int first, int second );
+uint32_t sumFromBuffer( int first, int second );
