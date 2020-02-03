@@ -1,15 +1,41 @@
-// Library's implementation.
+// See compressor.h for more info
 // Author: Josue Mosiah Contreras Rocha
 // File: compressor.c
 // Date: 03/02/20
 
+// ------------------------------------------
+// System and aplication specific headers
+// ------------------------------------------
+#include <stdio.h>
 #include "compressor.h"
+
+
+// -----------------------------
+// Private elements
+// -----------------------------
+
+// Private global variables
+static uint32_t buffer = 0;
+
+
+// Private functions
+
+/**
+ * Converts one char into a 32 bits integer.
+ *
+ * @param element Char to convert.
+ * @return Conversion's result.
+ */
+static uint32_t translate( char element ) {
+    return 1;
+}
+
 
 // -----------------------------
 // Public elements
 // -----------------------------
 
-// Functions
+// Public functions
 
 /**
  * Checks if the char's value is less or equal to 255.
@@ -17,8 +43,8 @@
  * @param element Character to checks.
  * @return True if the char passes.
  */
-bool validInput( char element ) {
-    return true;
+bool validInput( unsigned char element ) {
+    return element <= 255;
 }
 
 /**
@@ -28,7 +54,7 @@ bool validInput( char element ) {
  * @param position Alignment inside the buffer [0 - 3].
  */
 void setValue( char element, int position ) {
-
+    
 }
 
 /**
@@ -49,22 +75,5 @@ char getValue( int position ) {
  * @return Sum's result.
  */
 uint32_t sum( int first, int second ) {
-    return 1;
-}
-
-
-// -----------------------------
-// Private elements
-// -----------------------------
-
-// Functions
-
-/**
- * Converts one char into a 32 bits integer.
- *
- * @param element Char to convert.
- * @return Conversion's result.
- */
-static uint32_t translate( char element ) {
     return 1;
 }

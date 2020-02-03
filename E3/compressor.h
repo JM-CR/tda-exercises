@@ -3,19 +3,11 @@
 // File: compressor.h
 // Date: 03/02/20
 
-#include <stdio.h>
+// -----------------------------
+// System headers
+// -----------------------------
 #include <stdint.h>
 #include <stdbool.h>
-
-// -----------------------------
-// Private elements
-// -----------------------------
-
-// Objects
-static uint32_t buffer = 0;
-
-// Function
-static uint32_t translate( char element );
 
 
 // -----------------------------
@@ -23,7 +15,7 @@ static uint32_t translate( char element );
 // -----------------------------
 
 // Functions
-bool validInput( char element );
+bool validInput( unsigned char element );
 void setValue( char element, int position );
 char getValue( int position );
 uint32_t sum( int first, int second );

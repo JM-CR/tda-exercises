@@ -2,10 +2,12 @@
 // File: main.c
 // Date: 03/02/20
 
+// ------------------------------------------
+// System and aplication specific headers
+// ------------------------------------------
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
 #include "compressor.h"
 
 /**
@@ -29,11 +31,11 @@ int main( int argc, char *argv[] ) {
     // Initialize from console
     if ( argc > 1 ) 
         for ( int i = 1; i <= argc - 1; ++i ) {
-            if ( !validInput(*argv[i]) ) {
+            if ( validInput(*argv[i]) ) {
+                setValue(*argv[i], i - 1);
+            } else {
                 fprintf(stderr, "\nInvalid characters from arguments.\n\n");
                 exit(EXIT_FAILURE);
-            } else {
-                setValue(*argv[i], i - 1);
             }
         }
 
