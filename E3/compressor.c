@@ -95,7 +95,11 @@ void setValue( unsigned char element, int position ) {
  * @return Value at the position.
  */
 char getValue( int position ) {
-    return 'a';
+    // Get specific byte
+    uint32_t value = buffer & ~bitmask[position];
+
+    // Convert
+    return value >> position * 8;
 }
 
 /**
