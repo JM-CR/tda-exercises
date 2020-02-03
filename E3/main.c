@@ -10,6 +10,12 @@
 #include <string.h>
 #include "compressor.h"
 
+// Prototypes
+void waitForEnter( void );
+void printMenu( void );
+void execute( char option );
+
+
 /**
  * Current status for the program.
  */
@@ -40,6 +46,93 @@ int main( int argc, char *argv[] ) {
         }
 
     // Print menu
+    char option;
+    do {
+        printMenu();
+        scanf("%c", &option);
+        execute(option);
+    } while ( option != '4' );
 
     return 0;
+}
+
+
+// -----------------------------
+// Prototype's implementation
+// -----------------------------
+
+/**
+ * Prints the options for the program.
+ */
+void printMenu(void) {
+    printf("\e[1;1H\e[2J");
+    printf(
+        "--------------------\n"
+        " Choose an option:\n"
+        "--------------------\n"
+        "\n1. Set new value."
+        "\n2. Get value from buffer."
+        "\n3. Add two elements."
+        "\n4. Exit."
+        "\n\n --> "
+    );
+}
+
+/**
+ * Pauses the program until the user presses [Enter].
+ */
+void waitForEnter(void) {
+    printf("\n\n[Enter] to continue...");
+    while( getchar() != '\n' );
+    getchar();
+}
+
+/**
+ * Decision control for the menu.
+ *
+ * @param option User's selection.
+ */
+void execute( char option ) {
+    switch (option) {
+        // Set
+        case '1': {
+            char newElement;
+            printf("\nNew value to set: ");
+            scanf(" %c", &newElement);
+
+            int position;
+            printf("\nPosition [1 - 4]: ");
+            scanf(" %d", &position);
+            setValue(newElement, position - 1);
+            waitForEnter();
+            break;
+        }
+
+        // Get
+        case '2': {
+            int position;
+            printf("\nGet value from position [1 - 4]: ");
+            scanf(" %d", &position);
+
+            char currentValue = getValue(position - 1); 
+            printf("\nCurrent value at %d is: %c", position, currentValue);
+            waitForEnter();
+            break;
+        }
+
+        // Sum
+        case '3': {
+            int firstValue;
+            printf("\nFirst position from buffer [1 - 4]: ");
+            scanf(" %d", &firstValue);
+
+            int secondValue;
+            printf("\nSecond position from buffer [1 - 4]: ");
+            scanf(" %d", &secondValue);
+
+            printf("\nThe sum is: %d", sumFromBuffer(firstValue, secondValue));
+            waitForEnter();
+            break;
+        }
+    }
 }

@@ -71,7 +71,6 @@ bool validInput( unsigned char element ) {
     return element <= 255;
 }
 
-
 /**
  * Fills the buffer with one char at a specific position.
  *
@@ -79,6 +78,10 @@ bool validInput( unsigned char element ) {
  * @param position Alignment inside the buffer [0 - 3].
  */
 void setValue( unsigned char element, int position ) {
+    // Validation
+    if ( position > 3 )
+        return;
+
     // Create value
     uint32_t valueToInsert = translate(element);
     valueToInsert <<= position * 8;
@@ -95,6 +98,10 @@ void setValue( unsigned char element, int position ) {
  * @return Value at the position.
  */
 char getValue( int position ) {
+    // Validation
+    if ( position > 3 )
+        return ' ';
+
     // Get specific byte
     uint32_t value = buffer & ~bitmask[position];
 
