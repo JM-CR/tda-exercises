@@ -16,6 +16,6 @@
 
 // Functions
 bool validInput( unsigned char element );
-void setValue( char element, int position );
+void setValue( unsigned char element, int position );
 char getValue( int position );
 uint32_t sum( int first, int second );

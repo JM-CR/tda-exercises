@@ -7,6 +7,8 @@
 // System and aplication specific headers
 // ------------------------------------------
 #include <stdio.h>
+#include <string.h>
+#include <math.h>
 #include "compressor.h"
 
 
@@ -16,6 +18,10 @@
 
 // Private global variables
 static uint32_t buffer = 0;
+
+static uint32_t bitmask[] = {
+    0xFFFFFF00, 0xFFFF00FF, 0xFF00FFFF, 0x00FFFFFF
+};
 
 
 // Private functions
@@ -27,7 +33,25 @@ static uint32_t buffer = 0;
  * @return Conversion's result.
  */
 static uint32_t translate( char element ) {
-    return 1;
+    return element;
+}
+
+/**
+ * Prints the binary equivalent of a number.
+ *
+ * @param x Number.
+ * @return String with the result.
+ */
+static const char *numberToBinary(int x) {
+    // Initial size
+    static char b[33];
+    b[0] = '\0';
+
+    // Convert
+    for ( uint32_t z = pow(2, 31); z > 0; z >>= 1 )
+        strcat(b, ((x & z) == z) ? "1" : "0");
+
+    return b;
 }
 
 
@@ -47,14 +71,21 @@ bool validInput( unsigned char element ) {
     return element <= 255;
 }
 
+
 /**
  * Fills the buffer with one char at a specific position.
  *
  * @param element Element to insert.
  * @param position Alignment inside the buffer [0 - 3].
  */
-void setValue( char element, int position ) {
-    
+void setValue( unsigned char element, int position ) {
+    // Create value
+    uint32_t valueToInsert = translate(element);
+    valueToInsert <<= position * 8;
+
+    // Insert
+    buffer &= bitmask[position];
+    buffer |= valueToInsert;
 }
 
 /**
