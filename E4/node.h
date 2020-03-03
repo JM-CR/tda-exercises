@@ -11,6 +11,7 @@
 // ------------------------------------------
 #include <stdbool.h>
 #include <inttypes.h>
+#include <stdio.h>
 
 
 // -----------------------------
@@ -37,16 +38,17 @@ typedef struct Node {
  * @param c_state Connections' state.
  * @return Pointer to the new node.
  */
-Node_t *newNode( int id, float cost, Node_t *nextN[], int8_t c_state );
+Node_t *newNode( int id, float cost, Node_t **nextN, int8_t c_state );
 
 /**
  * Assigns nodes to a root node.
  * 
  * @param nodes Nodes that will be assign to the base node.
- * @param base Root node.
+ * @param size Number of nodes.
+ * @param ppBase Root node.
  * @return True if all assignments were correctly created; otherwise, false.
  */
-bool newConnection( Node_t *nodes[], Node_t **base );
+bool newConnection( Node_t *nodes[], size_t size, Node_t **ppBase );
 
 /**
  * Find a set of nodes using the given ids. 
