@@ -9,14 +9,9 @@
 #include "graph.h"
 
 #define TOTAL 5
-#define NEXT_SIZE 4
 
 int main(void) {
-	Node_t **arr = calloc(TOTAL, sizeof(Node_t));
-	for ( int i = 0; i < TOTAL; ++i ) {
-		arr[i] = newNode(i, 1, NULL, NEXT_SIZE, 0);
-		printNode(arr[i]);
-	}
+	Node_t *root = createGraph(3, 4);
 
     return 0;
 }

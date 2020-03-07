@@ -37,34 +37,29 @@ Node_t *newNode( int id, float cost, Node_t **nextN, size_t size, int8_t c_state
     node->cost = cost;
     node->c_state = c_state;
     node->nextN = calloc(size, sizeof(Node_t));
-
-    // Connect
-    newConnection(&node, nextN, size);
     return node;
 }
 
-void newConnection( Node_t **ppBase, Node_t *nodes[], size_t size ) {
+void addConnection( Node_t **baseNode, Node_t **node, size_t position ) {
     // Validate objects
-    if ( *ppBase == NULL || nodes == NULL ) {
+    if ( *baseNode == NULL || *node == NULL ) {
         return;
     }
 
-    // Create connections
-    for ( unsigned int i = 0; i < size; ++i  ) {
-        (*ppBase)->nextN[i] = nodes[i];
-    }
+    // Create connection
+    (*baseNode)->nextN[position] = *node;
 }
 
 Node_t **findNode( int id[] ) {
     return NULL;
 }
 
-void printNode( const Node_t *pNode ) {
+void printNode( const Node_t *node ) {
     printf(
         "\nID: %d\nCost: %f\nNext: %p\nState: 0x%02X\n",
-        pNode->id,
-        pNode->cost,
-        pNode->nextN,
-        pNode->c_state
+        node->id,
+        node->cost,
+        node->nextN,
+        node->c_state
     );
 }

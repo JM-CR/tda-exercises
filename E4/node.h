@@ -42,13 +42,13 @@ typedef struct Node {
 Node_t *newNode( int id, float cost, Node_t **nextN, size_t size, int8_t c_state );
 
 /**
- * Assigns nodes to a root node.
+ * Assigns a node over the base at the given array position.
  * 
- * @param ppBase Root node.
- * @param nodes Nodes that will be assign to the base node.
+ * @param baseNode Root node.
+ * @param node Node that will be assign to the base.
  * @param size Number of nodes.
  */
-void newConnection( Node_t **ppBase, Node_t *nodes[], size_t size );
+void addConnection( Node_t **baseNode, Node_t **node, size_t position );
 
 /**
  * Find a set of nodes using the given ids. 
@@ -63,6 +63,6 @@ Node_t **findNode( int id[] );
  *
  * @param pNode Node to print.
  */
-void printNode( const Node_t *pNode );
+void printNode( const Node_t *node );
 
 #endif
