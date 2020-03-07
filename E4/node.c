@@ -50,10 +50,6 @@ void addConnection( Node_t **baseNode, Node_t **node, size_t position ) {
     (*baseNode)->nextN[position] = *node;
 }
 
-Node_t **findNode( int id[] ) {
-    return NULL;
-}
-
 void printNode( const Node_t *node ) {
     printf(
         "\nID: %d\nCost: %f\nNext: %p\nState: 0x%02X\n",

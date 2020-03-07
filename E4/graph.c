@@ -36,7 +36,7 @@ typedef enum direction Direction_t;   // Used to track c_state
  * @param slot Insertion's orientation.
  */
 void setSlot( Node_t **baseNode, Node_t **insertNode, Direction_t slot ) {
-	// Update slot
+	// Update node
 	switch (slot) {
 	case UP:
 		addConnection(baseNode, insertNode, 0);
@@ -65,14 +65,15 @@ void setSlot( Node_t **baseNode, Node_t **insertNode, Direction_t slot ) {
  *
  * @param totalNodes Number of nodes in the row.
  * @param initialId ID for the initial node.
- * @return Pointer to the first array's element.
+ * @return Pointer to the first element of the array.
  */
 static Node_t **createRow( size_t totalNodes, unsigned int initialId ) { 
 	// Create nodes
-	Node_t **row = calloc(totalNodes, sizeof(Node_t));
 	unsigned int maxId = initialId + totalNodes;
-	for ( unsigned int i = initialId; i < maxId; ++i ) {
-		row[i] = newNode(i, 1, NULL, MAX_CONNECTIONS, 0);
+	Node_t **row = calloc(totalNodes, sizeof(Node_t));
+
+	for ( unsigned int i = 0, j = initialId; j < maxId; ++i, ++j ) {
+		row[i] = newNode(j, 1, NULL, MAX_CONNECTIONS, 0);
 	}
 
 	// Connect nodes
@@ -92,7 +93,38 @@ static Node_t **createRow( size_t totalNodes, unsigned int initialId ) {
 /* Implementation of the public functions */
 
 Node_t *createGraph( size_t rows, size_t cols ) {
-	Node_t **row = createRow(cols, 0);
+	// Guards
+	if ( rows == 0 || cols == 0 ) {
+		return NULL;
+	}
 
+	if ( rows == 1 ) {
+		return *createRow(cols, 1);
+	}
+
+	// Start row's linkage
+	Node_t **firstRow = createRow(cols, 1);
+	Node_t *root = *firstRow;
+	unsigned int id = 1 + cols;
+
+	for ( unsigned int i = 1; i < rows; ++i ) {
+		// Create
+		Node_t **secondRow = createRow(cols, id); 
+
+		// Link
+		for ( unsigned int j = 0; j < cols; ++j ) {
+			setSlot(&firstRow[j], &secondRow[j], DOWN);
+			setSlot(&secondRow[j], &firstRow[j], UP);
+		}
+
+		// Update
+		firstRow = secondRow;
+		id += cols;
+	}
+
+	return root;
+}
+
+Node_t **findNode( int id[] ) {
 	return NULL;
 }

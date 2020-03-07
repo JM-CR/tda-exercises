@@ -20,11 +20,20 @@
 
 /**
  * Creates a grid fully connected with size of r * c.
+ * If one or both parameters are zero, it will return a NULL pointer.
  *
  * @param rows Number of rows.
- * @param cols Number of columns.
+ * @param cols Number of columns
  * @return Pointer to the root node.
  */
 Node_t *createGraph( size_t rows, size_t cols );
+
+/**
+ * Finds a set of nodes using the given ids. 
+ * 
+ * @param id Ids to search.
+ * @return Found nodes.
+ */
+Node_t **findNode( int id[] );
 
 #endif

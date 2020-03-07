@@ -8,10 +8,8 @@
 #include <stdlib.h>
 #include "graph.h"
 
-#define TOTAL 5
-
 int main(void) {
-	Node_t *root = createGraph(3, 4);
+	Node_t *root = createGraph(2, 2);
 
     return 0;
 }
