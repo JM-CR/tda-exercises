@@ -1,7 +1,7 @@
 // See node.h for more info
 // Author: 
 // File: node.c
-// Date: 17/02/20
+// Date: 03/03/20
 
 // ------------------------------------------
 // System and aplication specific headers

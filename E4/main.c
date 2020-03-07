@@ -6,7 +6,7 @@
 // System and application specific headers
 // ------------------------------------------
 #include <stdlib.h>
-#include "node.h"
+#include "graph.h"
 
 #define TOTAL 5
 #define NEXT_SIZE 4
