@@ -11,7 +11,7 @@
 // ------------------------------------------
 #include <stdbool.h>
 #include <inttypes.h>
-#include <stdio.h>
+#include <stddef.h>
 
 
 // -----------------------------
@@ -23,7 +23,7 @@
 typedef struct Node {
     int id;
     float cost;
-    struct Node *nextN[];
+    struct Node **nextN;
     int8_t c_state;
 } Node_t;
 
@@ -35,20 +35,20 @@ typedef struct Node {
  * @param id Node's id.
  * @param cost Arrival cost time.
  * @param nextN Nodes to connect.
+ * @param size Number of nodes to connect.
  * @param c_state Connections' state.
  * @return Pointer to the new node.
  */
-Node_t *newNode( int id, float cost, Node_t **nextN, int8_t c_state );
+Node_t *newNode( int id, float cost, Node_t **nextN, size_t size, int8_t c_state );
 
 /**
  * Assigns nodes to a root node.
  * 
+ * @param ppBase Root node.
  * @param nodes Nodes that will be assign to the base node.
  * @param size Number of nodes.
- * @param ppBase Root node.
- * @return True if all assignments were correctly created; otherwise, false.
  */
-bool newConnection( Node_t *nodes[], size_t size, Node_t **ppBase );
+void newConnection( Node_t **ppBase, Node_t *nodes[], size_t size );
 
 /**
  * Find a set of nodes using the given ids. 
@@ -57,5 +57,12 @@ bool newConnection( Node_t *nodes[], size_t size, Node_t **ppBase );
  * @return Found nodes.
  */
 Node_t **findNode( int id[] );
+
+/**
+ * Prints a node's content.
+ *
+ * @param pNode Node to print.
+ */
+void printNode( const Node_t *pNode );
 
 #endif
