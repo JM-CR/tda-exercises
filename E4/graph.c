@@ -19,10 +19,10 @@
 
 #define MAX_CONNECTIONS 4
 
-#define U_MASK 0x80   // Up
-#define D_MASK 0x40   // Down
-#define L_MASK 0x20	  // Left
-#define R_MASK 0x10   // Right
+#define U_MASK 0x08   // Up
+#define D_MASK 0x04   // Down
+#define L_MASK 0x02	  // Left
+#define R_MASK 0x01   // Right
 
 
 /* Private functions */

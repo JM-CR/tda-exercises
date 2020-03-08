@@ -45,7 +45,7 @@ void printNode( const Node_t *node ) {
 
     // Get content
     printf(
-        "\nID: %d\nCost: %f\nState: 0x%02X\n",
+        "\nID: %d\nCost: %f\nState: 0x%X0\n",
         node->id,
         node->cost,
         node->c_state
