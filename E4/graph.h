@@ -16,6 +16,15 @@
 // Public interface
 // -----------------------------
 
+/* Types declarations */
+
+enum direction {
+	UP, DOWN, LEFT, RIGHT
+};
+
+typedef enum direction Direction_t;   // Used to track c_state
+
+
 /* Function prototypes */
 
 /**
@@ -35,5 +44,21 @@ Node_t *createGraph( size_t rows, size_t cols );
  * @return Found nodes.
  */
 Node_t **findNode( int id[] );
+
+/**
+ * Prints nodes' contents of the full graph.
+ *
+ * @param initialNode Root node.
+ */
+void printContents( Node_t *initialNode );
+
+/**
+ * Searchs if a node has an adjacent element in the indicated direction.
+ *
+ * @param node Start point.
+ * @param from Direction to look for.
+ * @return Found node; otherwise, NULL.
+ */
+Node_t *getAdjacentNode( const Node_t *node, Direction_t from );
 
 #endif

@@ -12,19 +12,6 @@
 
 
 // -----------------------------
-// Private elements
-// -----------------------------
-
-/* Private macros and constants */
-
-/* Private types */
-
-/* Private global variables */
-
-/* Private functions */
-
-
-// -----------------------------
 // Public elements
 // -----------------------------
 
@@ -41,7 +28,7 @@ Node_t *newNode( int id, float cost, Node_t **nextN, size_t size, int8_t c_state
 }
 
 void addConnection( Node_t **baseNode, Node_t **node, size_t position ) {
-    // Validate objects
+    // Guards
     if ( *baseNode == NULL || *node == NULL ) {
         return;
     }
@@ -51,11 +38,16 @@ void addConnection( Node_t **baseNode, Node_t **node, size_t position ) {
 }
 
 void printNode( const Node_t *node ) {
+    // Guards
+    if ( node == NULL ) {
+        return;
+    }
+
+    // Get content
     printf(
-        "\nID: %d\nCost: %f\nNext: %p\nState: 0x%02X\n",
+        "\nID: %d\nCost: %f\nState: 0x%02X\n",
         node->id,
         node->cost,
-        node->nextN,
         node->c_state
     );
 }

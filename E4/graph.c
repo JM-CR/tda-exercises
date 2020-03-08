@@ -7,6 +7,7 @@
 // System and aplication specific headers
 // ------------------------------------------
 #include <stdlib.h>
+#include <stdbool.h>
 #include "graph.h"
 
 
@@ -18,13 +19,11 @@
 
 #define MAX_CONNECTIONS 4
 
-/* Private types */
+#define U_MASK 0x80   // Up
+#define D_MASK 0x40   // Down
+#define L_MASK 0x20	  // Left
+#define R_MASK 0x10   // Right
 
-enum direction {
-	UP, DOWN, LEFT, RIGHT
-};
-
-typedef enum direction Direction_t;   // Used to track c_state
 
 /* Private functions */
 
@@ -35,27 +34,27 @@ typedef enum direction Direction_t;   // Used to track c_state
  * @param insertNode Node to insert.
  * @param slot Insertion's orientation.
  */
-void setSlot( Node_t **baseNode, Node_t **insertNode, Direction_t slot ) {
+static void setSlot( Node_t **baseNode, Node_t **insertNode, Direction_t slot ) {
 	// Update node
 	switch (slot) {
 	case UP:
 		addConnection(baseNode, insertNode, 0);
-		(*baseNode)->c_state |= 0x80;
+		(*baseNode)->c_state |= U_MASK;
 		break;
 
 	case DOWN:
 		addConnection(baseNode, insertNode, 1);
-		(*baseNode)->c_state |= 0x40;
+		(*baseNode)->c_state |= D_MASK;
 		break;
 
 	case LEFT:
 		addConnection(baseNode, insertNode, 2);
-		(*baseNode)->c_state |= 0x20;
+		(*baseNode)->c_state |= L_MASK;
 		break;
 
 	case RIGHT:
 		addConnection(baseNode, insertNode, 3);
-		(*baseNode)->c_state |= 0x10;
+		(*baseNode)->c_state |= R_MASK;
 		break;
 	}
 }
@@ -127,4 +126,40 @@ Node_t *createGraph( size_t rows, size_t cols ) {
 
 Node_t **findNode( int id[] ) {
 	return NULL;
+}
+
+void printContents( Node_t *initialNode ) {
+	// Initial values
+	Node_t *current, *lastLine;
+	current = lastLine = initialNode;
+
+	while ( true ) {
+		// Exit condition
+		if ( lastLine == NULL ) break;
+
+		// Print content
+		printNode(current);
+		current = getAdjacentNode(current, RIGHT);
+
+		// Next line
+		if ( current == NULL ) {
+			lastLine = current = getAdjacentNode(lastLine, DOWN);
+		}
+	}
+}
+
+Node_t *getAdjacentNode( const Node_t *node, Direction_t from ) {
+	switch (from) {
+	case UP:
+		return (node->c_state & U_MASK) == U_MASK ? node->nextN[0] : NULL;
+
+	case DOWN:
+		return (node->c_state & D_MASK) == D_MASK ? node->nextN[1] : NULL;
+
+	case LEFT:
+		return (node->c_state & L_MASK) == L_MASK ? node->nextN[2] : NULL;
+
+	default:
+		return (node->c_state & R_MASK ) == R_MASK ? node->nextN[3] : NULL;
+	}
 }

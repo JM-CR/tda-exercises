@@ -9,7 +9,8 @@
 #include "graph.h"
 
 int main(void) {
-	Node_t *root = createGraph(2, 2);
+	Node_t *root = createGraph(2, 3);
+	printContents(root);
 
     return 0;
 }
