@@ -25,6 +25,10 @@
 #define L_MASK 0x02	  // Left
 #define R_MASK 0x01   // Right
 
+static const int8_t masks[] = {
+	U_MASK, D_MASK, L_MASK, R_MASK
+};
+
 
 /* Private functions */
 
@@ -34,30 +38,12 @@
  * @param baseNode Root node.
  * @param insertNode Node to insert.
  * @param slot Insertion's orientation.
+ * @param mask Bitmask for the slot.
  */
-static void setSlot( Node_t **baseNode, Node_t **insertNode, Direction_t slot ) {
+static void setSlot( Node_t **baseNode, Node_t **insertNode, Direction_t slot, int8_t mask ) {
 	// Update node
-	switch (slot) {
-	case UP:
-		addConnection(baseNode, insertNode, 0);
-		(*baseNode)->c_state |= U_MASK;
-		break;
-
-	case DOWN:
-		addConnection(baseNode, insertNode, 1);
-		(*baseNode)->c_state |= D_MASK;
-		break;
-
-	case LEFT:
-		addConnection(baseNode, insertNode, 2);
-		(*baseNode)->c_state |= L_MASK;
-		break;
-
-	case RIGHT:
-		addConnection(baseNode, insertNode, 3);
-		(*baseNode)->c_state |= R_MASK;
-		break;
-	}
+	addConnection(baseNode, insertNode, slot);
+	(*baseNode)->c_state |= mask;
 }
 
 /**
@@ -78,11 +64,21 @@ static Node_t **createRow( size_t totalNodes, unsigned int initialId ) {
 
 	// Connect nodes
 	for ( unsigned int i = 0; i < totalNodes - 1; ++i ) {
-		setSlot(&row[i], &row[i + 1], RIGHT);
-		setSlot(&row[i + 1], &row[i], LEFT);
+		setSlot(&row[i], &row[i + 1], RIGHT, R_MASK);
+		setSlot(&row[i + 1], &row[i], LEFT, L_MASK);
 	}
 
 	return row;
+}
+
+/**
+ * Translates a direction to its corresponding bitmask.
+ *
+ * @param from Direction to translate.
+ * @return Corresponding bitmask.
+ */
+static int8_t getMask( Direction_t from ) {
+	return masks[from];
 }
 
 
@@ -113,8 +109,8 @@ Node_t *createGraph( size_t rows, size_t cols ) {
 
 		// Link
 		for ( unsigned int j = 0; j < cols; ++j ) {
-			setSlot(&firstRow[j], &secondRow[j], DOWN);
-			setSlot(&secondRow[j], &firstRow[j], UP);
+			setSlot(&firstRow[j], &secondRow[j], DOWN, D_MASK);
+			setSlot(&secondRow[j], &firstRow[j], UP, U_MASK);
 		}
 
 		// Update
@@ -148,17 +144,6 @@ void printRandomRoute( Node_t *initialNode ) {
 }
 
 Node_t *getAdjacentNode( const Node_t *node, Direction_t from ) {
-	switch (from) {
-	case UP:
-		return (node->c_state & U_MASK) == U_MASK ? node->nextN[0] : NULL;
-
-	case DOWN:
-		return (node->c_state & D_MASK) == D_MASK ? node->nextN[1] : NULL;
-
-	case LEFT:
-		return (node->c_state & L_MASK) == L_MASK ? node->nextN[2] : NULL;
-
-	default:
-		return (node->c_state & R_MASK ) == R_MASK ? node->nextN[3] : NULL;
-	}
+	int8_t bits = getMask(from);
+	return (node->c_state & bits) == bits ? node->nextN[from] : NULL;
 }
