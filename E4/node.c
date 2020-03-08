@@ -1,5 +1,6 @@
 // See node.h for more info
-// Author: 
+// Author: Josue Mosiah Contreras Rocha
+// Author: Gabriela Rojano
 // File: node.c
 // Date: 03/03/20
 
@@ -35,6 +36,13 @@ void addConnection( Node_t **baseNode, Node_t **node, size_t position ) {
 
     // Create connection
     (*baseNode)->nextN[position] = *node;
+}
+
+
+Node_t **findNode( int id[], Node_t **baseNode ) {
+	/* Here GABS */
+
+	return NULL;
 }
 
 void printNode( const Node_t *node ) {

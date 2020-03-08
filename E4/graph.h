@@ -1,5 +1,6 @@
-// 
-// Author: 
+// Functions that simulates a graph using the Top-Down approach.
+// Author: Josue Mosiah Contreras Rocha
+// Author: Gabriela Rojano
 // File: graph.h
 // Date: 07/03/20
 
@@ -38,19 +39,18 @@ typedef enum direction Direction_t;   // Used to track c_state
 Node_t *createGraph( size_t rows, size_t cols );
 
 /**
- * Finds a set of nodes using the given ids. 
- * 
- * @param id Ids to search.
- * @return Found nodes.
- */
-Node_t **findNode( int id[] );
-
-/**
- * Prints nodes' contents of the full graph.
+ * Prints nodes' contents using the fully connected graph.
  *
  * @param initialNode Root node.
  */
 void printContents( Node_t *initialNode );
+
+/**
+ * Prints a random route using the fully connected graph.
+ *
+ * @param initialNode Root node.
+ */
+void printRandomRoute( Node_t *initialNode );
 
 /**
  * Searchs if a node has an adjacent element in the indicated direction.

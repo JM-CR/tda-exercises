@@ -1,5 +1,5 @@
-// 
-// Author: 
+// Functions to create the necessary nodes for the graph.
+// Author: Josue Mosiah Contreras Rocha
 // File: node.h
 // Date: 03/03/20
 
@@ -49,6 +49,15 @@ Node_t *newNode( int id, float cost, Node_t **nextN, size_t size, int8_t c_state
  * @param position Array index ('nextN' element).
  */
 void addConnection( Node_t **baseNode, Node_t **node, size_t position );
+
+/**
+ * Finds a set of nodes using the given ids. 
+ * 
+ * @param baseNode Root node.
+ * @param id Ids to search.
+ * @return Found nodes.
+ */
+Node_t **findNode( int id[], Node_t **baseNode );
 
 /**
  * Prints a node's content.

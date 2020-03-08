@@ -1,5 +1,5 @@
 // See graph.h for more info
-// Author: 
+// Author: Josue Mosiah Contreras Rocha 
 // File: graph.c
 // Date: 07/03/20
 
@@ -8,6 +8,7 @@
 // ------------------------------------------
 #include <stdlib.h>
 #include <stdbool.h>
+#include <stdio.h>
 #include "graph.h"
 
 
@@ -124,19 +125,12 @@ Node_t *createGraph( size_t rows, size_t cols ) {
 	return root;
 }
 
-Node_t **findNode( int id[] ) {
-	return NULL;
-}
-
 void printContents( Node_t *initialNode ) {
 	// Initial values
 	Node_t *current, *lastLine;
 	current = lastLine = initialNode;
 
-	while ( true ) {
-		// Exit condition
-		if ( lastLine == NULL ) break;
-
+	while ( lastLine != NULL ) {
 		// Print content
 		printNode(current);
 		current = getAdjacentNode(current, RIGHT);
@@ -146,6 +140,11 @@ void printContents( Node_t *initialNode ) {
 			lastLine = current = getAdjacentNode(lastLine, DOWN);
 		}
 	}
+}
+
+void printRandomRoute( Node_t *initialNode ) {
+	/* Here GABS */
+	printf("\n\n");
 }
 
 Node_t *getAdjacentNode( const Node_t *node, Direction_t from ) {

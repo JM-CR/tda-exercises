@@ -1,6 +1,8 @@
+// Graph simulator.
 // Author: Josue Mosiah Contreras Rocha
+// Author: Gabriela Rojano
 // File: main.c
-// Date: 22/02/20
+// Date: 07/03/20
 
 // ------------------------------------------
 // System and application specific headers
@@ -10,6 +12,7 @@
 
 int main(void) {
 	Node_t *root = createGraph(2, 3);
+	printRandomRoute(root);
 	printContents(root);
 
     return 0;
