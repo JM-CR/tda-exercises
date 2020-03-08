@@ -33,17 +33,26 @@ static const int8_t masks[] = {
 /* Private functions */
 
 /**
+ * Translates a direction to its corresponding bitmask.
+ *
+ * @param from Direction to translate.
+ * @return Corresponding bitmask.
+ */
+static int8_t getMask( Direction_t from ) {
+	return masks[from];
+}
+
+/**
  * Inserts a node over the base node at the given slot.
  *
  * @param baseNode Root node.
  * @param insertNode Node to insert.
  * @param slot Insertion's orientation.
- * @param mask Bitmask for the slot.
  */
-static void setSlot( Node_t **baseNode, Node_t **insertNode, Direction_t slot, int8_t mask ) {
+static void setSlot( Node_t **baseNode, Node_t **insertNode, Direction_t slot ) {
 	// Update node
 	addConnection(baseNode, insertNode, slot);
-	(*baseNode)->c_state |= mask;
+	(*baseNode)->c_state |= getMask(slot);
 }
 
 /**
@@ -64,21 +73,11 @@ static Node_t **createRow( size_t totalNodes, unsigned int initialId ) {
 
 	// Connect nodes
 	for ( unsigned int i = 0; i < totalNodes - 1; ++i ) {
-		setSlot(&row[i], &row[i + 1], RIGHT, R_MASK);
-		setSlot(&row[i + 1], &row[i], LEFT, L_MASK);
+		setSlot(&row[i], &row[i + 1], RIGHT);
+		setSlot(&row[i + 1], &row[i], LEFT);
 	}
 
 	return row;
-}
-
-/**
- * Translates a direction to its corresponding bitmask.
- *
- * @param from Direction to translate.
- * @return Corresponding bitmask.
- */
-static int8_t getMask( Direction_t from ) {
-	return masks[from];
 }
 
 
@@ -109,8 +108,8 @@ Node_t *createGraph( size_t rows, size_t cols ) {
 
 		// Link
 		for ( unsigned int j = 0; j < cols; ++j ) {
-			setSlot(&firstRow[j], &secondRow[j], DOWN, D_MASK);
-			setSlot(&secondRow[j], &firstRow[j], UP, U_MASK);
+			setSlot(&firstRow[j], &secondRow[j], DOWN);
+			setSlot(&secondRow[j], &firstRow[j], UP);
 		}
 
 		// Update
