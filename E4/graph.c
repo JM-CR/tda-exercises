@@ -9,6 +9,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <stdio.h>
+#include <time.h>
 #include "graph.h"
 
 
@@ -78,6 +79,23 @@ static Node_t **createRow( size_t totalNodes, unsigned int initialId ) {
 	}
 
 	return row;
+}
+
+/**
+ * Produces a random direction.
+ *
+ * @return The direction.
+ */
+static Direction_t randomDirection( void ) {
+	// Initial set up
+	static bool firstRun = true;
+	if ( firstRun ) {
+		firstRun = false;
+		srand(time(0));
+	}
+
+	// Get random
+	return (Direction_t)(rand() % (RIGHT + 1));
 }
 
 
