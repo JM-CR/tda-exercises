@@ -174,6 +174,35 @@ void printRandomRoute( Node_t *initialNode ) {
 		inicio=inicio+1;
 	}
 	printf("\n\n");
+	
+}
+
+Node_t **findNode( int id[], Node_t **baseNode ) {
+	/* Here GABS */
+    /*Node_t *current, *lastLine;
+	current = lastLine = *baseNode;
+    int idN = 0;
+    int numElements = sizeof(id)/sizeof(int);
+    Node_t nodesID[numElements];
+    for(int i = 0 ; i< numElements;i++){
+        while ( lastLine != NULL ) {
+            // Print content
+            idN = getIdNode(current);
+            if(idN == id[i]){
+                nodesID[i] = current;
+				lastLine = NULL;
+            }else{
+				current = getAdjacentNode(current, RIGHT);
+            	// Next line
+            	if ( current == NULL ) {
+                	lastLine = current = getAdjacentNode(lastLine, DOWN);
+            	}
+			}
+            
+        }
+    }*/ 
+	
+	return NULL;
 }
 
 Node_t *getAdjacentNode( const Node_t *node, Direction_t from ) {

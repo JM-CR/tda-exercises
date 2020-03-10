@@ -61,4 +61,13 @@ void printRandomRoute( Node_t *initialNode );
  */
 Node_t *getAdjacentNode( const Node_t *node, Direction_t from );
 
+/**
+ * Finds a set of nodes using the given ids. 
+ * 
+ * @param baseNode Root node.
+ * @param id Ids to search.
+ * @return Found nodes.
+ */
+Node_t **findNode( int id[], Node_t **baseNode );
+
 #endif
