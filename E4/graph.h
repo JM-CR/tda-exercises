@@ -49,8 +49,11 @@ void printContents( Node_t *initialNode );
  * Prints a random route using the fully connected graph.
  *
  * @param initialNode Root node.
+ * @param pathNumber Number of segments to draw.
+ * @param rows Number of rows that the graph has.
+ * @param cols Number of columns that the graph has.
  */
-void printRandomRoute( Node_t *initialNode );
+void printRandomRoute( Node_t *initialNode, int pathNumber, int rows, int cols );
 
 /**
  * Searchs if a node has an adjacent element in the indicated direction.

@@ -11,9 +11,10 @@
 #include "graph.h"
 
 int main(void) {
-	Node_t *root = createGraph(2, 3);
-	printRandomRoute(root);
-	printContents(root);
+	int cols = 4;
+	int rows = 4;
+	Node_t *root = createGraph(rows, cols);
+	printRandomRoute(root, 10, rows, cols);
 
     return 0;
 }

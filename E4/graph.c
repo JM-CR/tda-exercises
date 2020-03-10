@@ -98,6 +98,36 @@ static Direction_t randomDirection( void ) {
 	return (Direction_t)(rand() % (RIGHT + 1));
 }
 
+/**
+ * Fills a grid with the desired character.
+ *
+ * @param rows Number of rows.
+ * @param cols Number of columns.
+ * @param grid Grid to fill.
+ * @param with Char to use.
+ */
+static void fillGrid( size_t rows, size_t cols, char grid[cols][rows], char with ) {
+	for ( int r = 0; r < rows; ++r )
+		for ( int c = 0; c < cols; ++c )
+			grid[r][c] = with;
+}
+
+/**
+ * Used to print a random path.
+ * 
+ * @param rows Number of rows.
+ * @param cols Number of columns.
+ * @param path Path to draw.
+ */
+static void printRoute( size_t rows, size_t cols, char path[rows][cols] ) {
+	for ( int r = 0; r < rows; ++r ) {
+		for ( int c = 0; c < cols; ++c  ) {
+			printf("%c ", path[r][c]);
+		}
+		printf("\n");
+	}
+}
+
 
 // -----------------------------
 // Public elements
@@ -155,46 +185,43 @@ void printContents( Node_t *initialNode ) {
 	}
 }
 
-void printRandomRoute( Node_t *initialNode ) {
-	/* Checar si el initialNode tiene nodos adyacentes */
-	/* aleatoriamente escoger un nodo */
-	/* hacer lo mismo hasta que haya un null de lado que se eligio*/
-	Node_t *current, *lastLine;
-	current = lastLine = initialNode;
-	
-	int randomnumber;
-	int inicio = 0;
-	printNode(current);
-	while ( lastLine != NULL ) {
-		srand(time(NULL)); //Es aqui Mosh quiero que esto sea super aleatorio y cuando lo corro me sale el mismo valor siempre
-		randomnumber = rand() % ((4+1)-1) + 1;
-		printf("El numero random es: %d\n",randomnumber);
-		if(randomnumber == 1){
-			current = getAdjacentNode(current, UP);
-		}
-		if(randomnumber == 2){
-			current = getAdjacentNode(current, DOWN);
-		}
-		if(randomnumber == 3){
-			current = getAdjacentNode(current, LEFT);
-		}
-		if(randomnumber == 4){
-			current = getAdjacentNode(current, RIGHT);
-		}
-		if(current == NULL && inicio == 0){
-			srand(time(NULL));
-			randomnumber = rand() % ((4+1)-1) + 1;
-			printf("El numero random de inicio es: %d\n",randomnumber);
-		}else{
-			printNode(current);
-			if(current == NULL){
-				lastLine = NULL;
-			}
-		}
-		inicio=inicio+1;
+void printRandomRoute( Node_t *initialNode, int pathNumber, int rows, int cols ) {
+	// Guards
+	if ( initialNode == NULL || pathNumber <= 0 || rows <= 0 || cols <= 0 ) {
+		return;
 	}
+
+	// Create route
+	Node_t *currentNode, *lastNode;
+	currentNode = lastNode = initialNode;
 	
-	printf("\n\n");
+	char coordinates[rows][cols];
+	fillGrid(rows, cols, coordinates, ' ');
+
+	for ( unsigned int x = 0, y = 0, count = 0; count < pathNumber; ) {
+		// Get random node
+		Direction_t value = randomDirection();
+		currentNode = getAdjacentNode(currentNode, value);
+		
+		// Guards
+		if ( currentNode == NULL ) {
+			currentNode = lastNode;
+			continue;
+		} else {
+			lastNode = currentNode;
+			++count;
+		}
+
+		// Draw point
+		coordinates[x][y] = '*';
+
+		// Update coordinates
+		if ( value == UP ) 		   y = (y > 0) ? (y - 1) : y;
+		else if ( value == DOWN  ) ++y;
+		else if ( value == LEFT  ) x = (x > 0) ? (x - 1) : x;
+		else if ( value == RIGHT ) ++x;
+	}
+	printRoute(rows, cols, coordinates);
 }
 
 Node_t *getAdjacentNode( const Node_t *node, Direction_t from ) {
