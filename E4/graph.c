@@ -138,7 +138,44 @@ void printContents( Node_t *initialNode ) {
 }
 
 void printRandomRoute( Node_t *initialNode ) {
-	/* Here GABS */
+	/* Checar si el initialNode tiene nodos adyacentes */
+	/* aleatoriamente escoger un nodo */
+	/* hacer lo mismo hasta que haya un null de lado que se eligio*/
+	Node_t *current, *lastLine;
+	current = lastLine = initialNode;
+	
+	int randomnumber;
+	int inicio = 0;
+	printNode(current);
+	while ( lastLine != NULL ) {
+		srand(time(NULL)); //Es aqui Mosh quiero que esto sea super aleatorio y cuando lo corro me sale el mismo valor siempre
+		randomnumber = rand() % ((4+1)-1) + 1;
+		printf("El numero random es: %d\n",randomnumber);
+		if(randomnumber == 1){
+			current = getAdjacentNode(current, UP);
+		}
+		if(randomnumber == 2){
+			current = getAdjacentNode(current, DOWN);
+		}
+		if(randomnumber == 3){
+			current = getAdjacentNode(current, LEFT);
+		}
+		if(randomnumber == 4){
+			current = getAdjacentNode(current, RIGHT);
+		}
+		if(current == NULL && inicio == 0){
+			srand(time(NULL));
+			randomnumber = rand() % ((4+1)-1) + 1;
+			printf("El numero random de inicio es: %d\n",randomnumber);
+		}else{
+			printNode(current);
+			if(current == NULL){
+				lastLine = NULL;
+			}
+		}
+		inicio=inicio+1;
+	}
+	
 	printf("\n\n");
 }
 
