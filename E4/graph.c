@@ -224,6 +224,31 @@ void printRandomRoute( Node_t *initialNode, int pathNumber, int rows, int cols )
 	printRoute(rows, cols, coordinates);
 }
 
+Node_t **findNode( int id[], Node_t *baseNode, int size ) {
+	/* Here GABS */
+	Node_t *current, *lastLine;
+	current = lastLine = baseNode;
+    int idN = 0;
+    Node_t **nodesID = malloc ( size*sizeof(Node_t) );
+    for(int i = 0 ; i< size;i++){
+        while ( lastLine != NULL ) {
+            idN = getNodeId(current);
+            if(idN == id[i]){
+                nodesID[i] = current;
+				lastLine = NULL;
+            }else{
+				current = getAdjacentNode(current, RIGHT);
+            	// Next line
+            	if ( current == NULL ) {
+                	lastLine = current = getAdjacentNode(lastLine, DOWN);
+            	}
+			}
+            
+        }
+    }
+	return nodesID;
+}
+
 Node_t *getAdjacentNode( const Node_t *node, Direction_t from ) {
 	int8_t bits = getMask(from);
 	return (node->c_state & bits) == bits ? node->nextN[from] : NULL;

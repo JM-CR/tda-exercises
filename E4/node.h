@@ -51,19 +51,16 @@ Node_t *newNode( int id, float cost, Node_t **nextN, size_t size, int8_t c_state
 void addConnection( Node_t **baseNode, Node_t **node, size_t position );
 
 /**
- * Finds a set of nodes using the given ids. 
- * 
- * @param baseNode Root node.
- * @param id Ids to search.
- * @return Found nodes.
- */
-Node_t **findNode( int id[], Node_t **baseNode );
-
-/**
  * Prints a node's content.
  *
  * @param pNode Node to print.
  */
 void printNode( const Node_t *node );
 
+/**
+ * Get the id of the node
+ *
+ * @param pNode Node to get id
+ */
+int getNodeId( const Node_t *node );
 #endif

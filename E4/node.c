@@ -39,11 +39,7 @@ void addConnection( Node_t **baseNode, Node_t **node, size_t position ) {
 }
 
 
-Node_t **findNode( int id[], Node_t **baseNode ) {
-	/* Here GABS */
 
-	return NULL;
-}
 
 void printNode( const Node_t *node ) {
     // Guards
@@ -58,4 +54,13 @@ void printNode( const Node_t *node ) {
         node->cost,
         node->c_state
     );
+}
+
+int getNodeId( const Node_t *node ) {
+    // Guards
+    if ( node == NULL ) {
+        return 0;
+    }else{
+        return node->id;
+    }
 }
