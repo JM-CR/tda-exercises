@@ -11,7 +11,7 @@
 #include "graph.h"
 
 int main(void) {
-	Node_t *root = createGraph(2, 3);
+	Node_t *root = createGraph(3, 3);
 	printRandomRoute(root);
 	printContents(root);
 
