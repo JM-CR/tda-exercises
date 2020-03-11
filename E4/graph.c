@@ -128,6 +128,25 @@ static void printRoute( size_t rows, size_t cols, char path[rows][cols] ) {
 	}
 }
 
+/**
+ * Checks one id against an array of elements.
+ *
+ * @param id ID to check.
+ * @param elements Objects to compare.
+ * @param size Number of elements.
+ * @return True if there is a match; otherwise, false.
+ */
+static bool containsId( int id, int elements[], size_t size ) {
+	bool flag = false;
+	for ( int i = 0; i < size; ++i ) {
+		if ( id == elements[i] ) {
+			flag = true;
+			break;
+		}
+	}
+	return flag;
+}
+
 
 // -----------------------------
 // Public elements
@@ -224,30 +243,31 @@ void printRandomRoute( Node_t *initialNode, int pathNumber, int rows, int cols )
 	printRoute(rows, cols, coordinates);
 }
 
-Node_t **findNode( int id[], Node_t *baseNode, size_t size ) {
-	Node_t *current, *lastLine;
-    Node_t **results = malloc ( size*sizeof(Node_t) );
-	current = lastLine = baseNode;
-    int idN = 0;
-	
-    for(int i = 0 ; i< size;i++){
-        while ( lastLine != NULL ) {
-            idN = getNodeId(current);
-            if(idN == id[i]){
-                results[i] = current;
-				lastLine = NULL;
-            } else {
-				current = getAdjacentNode(current, RIGHT);
+Node_t **findNode( Node_t *baseNode, int id[], size_t size ) {
+	// Create memory
+	int lastFound = 0;
+    Node_t **matches = calloc(size, sizeof(Node_t));
+	for ( int i = 0; i < size; ++i ) {
+		matches[i] = NULL;
+	}
 
-            	// Next line
-            	if ( current == NULL ) {
-                	lastLine = current = getAdjacentNode(lastLine, DOWN);
-            	}
-			}
-            
-        }
-    }
-	return results;
+	// Search
+	Node_t *current, *lastLine;
+	current = lastLine = baseNode;
+	while ( lastLine != NULL ) {
+		// Find matches
+		if ( containsId(current->id, id, size) ) {
+			matches[lastFound++] = current;
+		}
+
+		// Next line
+		current = getAdjacentNode(current, RIGHT);
+		if ( current == NULL ) {
+			lastLine = current = getAdjacentNode(lastLine, DOWN);
+		}
+	}
+
+	return matches;
 }
 
 Node_t *getAdjacentNode( const Node_t *node, Direction_t from ) {

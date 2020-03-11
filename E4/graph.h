@@ -70,8 +70,8 @@ Node_t *getAdjacentNode( const Node_t *node, Direction_t from );
  * @param baseNode Root node.
  * @param id Ids to search.
  * @param size Number of ids to search.
- * @return Found nodes.
+ * @return Sorted array with the found nodes.
  */
-Node_t **findNode( int id[], Node_t *baseNode, size_t size );
+Node_t **findNode( Node_t *baseNode, int id[], size_t size );
 
 #endif

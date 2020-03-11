@@ -11,16 +11,18 @@
 #include "graph.h"
 
 int main(void) {
-	int cols = 4;
-	int rows = 4;
+	// Create
+	int cols = 2;
+	int rows = 2;
 	Node_t *root = createGraph(rows, cols);
-	printRandomRoute(root, 10, rows, cols);
+	printRandomRoute(root, 2, rows, cols);
 
-	int id[] = { 1, 2 };
+	// Find nodes
+	int id[] = { 1, 3, 2 };
 	size_t size = sizeof(id) / sizeof(int);
-	Node_t **result = findNode(id, root, size);
-	for( int i = 0; i < size; i++) {
+	Node_t **result = findNode(root, id, size);
+	for( int i = 0; i < size; ++i )
 		printNode(result[i]);
-	}
+
     return 0;
 }
