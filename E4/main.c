@@ -17,7 +17,7 @@ int main(void) {
 	printRandomRoute(root, 10, rows, cols);
 
 	int id[] = { 1, 2 };
-	int size = sizeof(id) / sizeof(int);
+	size_t size = sizeof(id) / sizeof(int);
 	Node_t **result = findNode(id, root, size);
 	for( int i = 0; i < size; i++) {
 		printNode(result[i]);

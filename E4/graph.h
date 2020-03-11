@@ -56,16 +56,6 @@ void printContents( Node_t *initialNode );
 void printRandomRoute( Node_t *initialNode, int pathNumber, int rows, int cols );
 
 /**
- * Finds a set of nodes using the given ids. 
- * 
- * @param baseNode Root node.
- * @param id Ids to search.
- * @param size The number of ids to search
- * @return Found nodes.
- */
-Node_t **findNode( int id[], Node_t *baseNode, int size );
-
-/**
  * Searchs if a node has an adjacent element in the indicated direction.
  *
  * @param node Start point.
@@ -82,6 +72,6 @@ Node_t *getAdjacentNode( const Node_t *node, Direction_t from );
  * @param size Number of ids to search.
  * @return Found nodes.
  */
-Node_t **findNode( int id[], Node_t **baseNode, size_t size );
+Node_t **findNode( int id[], Node_t *baseNode, size_t size );
 
 #endif
