@@ -49,8 +49,21 @@ void printContents( Node_t *initialNode );
  * Prints a random route using the fully connected graph.
  *
  * @param initialNode Root node.
+ * @param pathNumber Number of segments to draw.
+ * @param rows Number of rows that the graph has.
+ * @param cols Number of columns that the graph has.
  */
-void printRandomRoute( Node_t *initialNode );
+void printRandomRoute( Node_t *initialNode, int pathNumber, int rows, int cols );
+
+/**
+ * Finds a set of nodes using the given ids. 
+ * 
+ * @param baseNode Root node.
+ * @param id Ids to search.
+ * @param size The number of ids to search
+ * @return Found nodes.
+ */
+Node_t **findNode( int id[], Node_t *baseNode, int size );
 
 /**
  * Searchs if a node has an adjacent element in the indicated direction.
@@ -66,8 +79,9 @@ Node_t *getAdjacentNode( const Node_t *node, Direction_t from );
  * 
  * @param baseNode Root node.
  * @param id Ids to search.
+ * @param size Number of ids to search.
  * @return Found nodes.
  */
-Node_t **findNode( int id[], Node_t **baseNode );
+Node_t **findNode( int id[], Node_t **baseNode, size_t size );
 
 #endif

@@ -50,7 +50,6 @@ Node_t *newNode( int id, float cost, Node_t **nextN, size_t size, int8_t c_state
  */
 void addConnection( Node_t **baseNode, Node_t **node, size_t position );
 
-
 /**
  * Prints a node's content.
  *
@@ -63,6 +62,6 @@ void printNode( const Node_t *node );
  *
  * @param pNode Node to get id
  */
-int getIdNode( const Node_t *node );
+int getNodeId( const Node_t *node );
 
 #endif

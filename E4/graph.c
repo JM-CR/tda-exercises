@@ -98,6 +98,36 @@ static Direction_t randomDirection( void ) {
 	return (Direction_t)(rand() % (RIGHT + 1));
 }
 
+/**
+ * Fills a grid with the desired character.
+ *
+ * @param rows Number of rows.
+ * @param cols Number of columns.
+ * @param grid Grid to fill.
+ * @param with Char to use.
+ */
+static void fillGrid( size_t rows, size_t cols, char grid[cols][rows], char with ) {
+	for ( int r = 0; r < rows; ++r )
+		for ( int c = 0; c < cols; ++c )
+			grid[r][c] = with;
+}
+
+/**
+ * Used to print a random path.
+ * 
+ * @param rows Number of rows.
+ * @param cols Number of columns.
+ * @param path Path to draw.
+ */
+static void printRoute( size_t rows, size_t cols, char path[rows][cols] ) {
+	for ( int r = 0; r < rows; ++r ) {
+		for ( int c = 0; c < cols; ++c  ) {
+			printf("%c ", path[r][c]);
+		}
+		printf("\n");
+	}
+}
+
 
 // -----------------------------
 // Public elements
@@ -155,44 +185,60 @@ void printContents( Node_t *initialNode ) {
 	}
 }
 
-void printRandomRoute( Node_t *initialNode ) {
-	Node_t *current, *lastLine;
-	current = lastLine = initialNode;
-	int inicio = 0;
-	Direction_t dir;
-	printNode(current);
-	while ( lastLine != NULL ) {
-		dir = randomDirection();
-		current = getAdjacentNode(current, dir);
-		if(current == NULL && inicio != 0){
-			lastLine = NULL;
-		}else{
-			if(current != NULL){
-				printNode(current);
-			}
-		}
-		inicio=inicio+1;
+void printRandomRoute( Node_t *initialNode, int pathNumber, int rows, int cols ) {
+	// Guards
+	if ( initialNode == NULL || pathNumber <= 0 || rows <= 0 || cols <= 0 ) {
+		return;
 	}
-	printf("\n\n");
+
+	// Create route
+	Node_t *currentNode, *lastNode;
+	currentNode = lastNode = initialNode;
 	
+	char coordinates[rows][cols];
+	fillGrid(rows, cols, coordinates, ' ');
+
+	for ( unsigned int x = 0, y = 0, count = 0; count < pathNumber; ) {
+		// Get random node
+		Direction_t value = randomDirection();
+		currentNode = getAdjacentNode(currentNode, value);
+		
+		// Guards
+		if ( currentNode == NULL ) {
+			currentNode = lastNode;
+			continue;
+		} else {
+			lastNode = currentNode;
+			++count;
+		}
+
+		// Draw point
+		coordinates[x][y] = '*';
+
+		// Update coordinates
+		if ( value == UP ) 		   y = (y > 0) ? (y - 1) : y;
+		else if ( value == DOWN  ) ++y;
+		else if ( value == LEFT  ) x = (x > 0) ? (x - 1) : x;
+		else if ( value == RIGHT ) ++x;
+	}
+	printRoute(rows, cols, coordinates);
 }
 
-Node_t **findNode( int id[], Node_t **baseNode ) {
-	/* Here GABS */
-    /*Node_t *current, *lastLine;
-	current = lastLine = *baseNode;
+Node_t **findNode( int id[], Node_t *baseNode, size_t size ) {
+	Node_t *current, *lastLine;
+    Node_t **results = malloc ( size*sizeof(Node_t) );
+	current = lastLine = baseNode;
     int idN = 0;
-    int numElements = sizeof(id)/sizeof(int);
-    Node_t nodesID[numElements];
-    for(int i = 0 ; i< numElements;i++){
+	
+    for(int i = 0 ; i< size;i++){
         while ( lastLine != NULL ) {
-            // Print content
-            idN = getIdNode(current);
+            idN = getNodeId(current);
             if(idN == id[i]){
-                nodesID[i] = current;
+                results[i] = current;
 				lastLine = NULL;
-            }else{
+            } else {
 				current = getAdjacentNode(current, RIGHT);
+
             	// Next line
             	if ( current == NULL ) {
                 	lastLine = current = getAdjacentNode(lastLine, DOWN);
@@ -200,9 +246,8 @@ Node_t **findNode( int id[], Node_t **baseNode ) {
 			}
             
         }
-    }*/ 
-	
-	return NULL;
+    }
+	return results;
 }
 
 Node_t *getAdjacentNode( const Node_t *node, Direction_t from ) {

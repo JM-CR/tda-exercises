@@ -38,7 +38,6 @@ void addConnection( Node_t **baseNode, Node_t **node, size_t position ) {
     (*baseNode)->nextN[position] = *node;
 }
 
-
 void printNode( const Node_t *node ) {
     // Guards
     if ( node == NULL ) {
@@ -54,7 +53,7 @@ void printNode( const Node_t *node ) {
     );
 }
 
-int getIdNode( const Node_t *node ) {
+int getNodeId( const Node_t *node ) {
     // Guards
     if ( node == NULL ) {
         return 0;
