@@ -9,23 +9,39 @@
 // -----------------------------
 // System headers
 // -----------------------------
-
+#include <stdbool.h>
 
 // -----------------------------
 // Public interface
 // -----------------------------
 
-/* Constants */
-
 /* Types declarations */
 
-/* Global variables */
+enum type {
+    AND, OR, NOT, XOR
+};
+
+typedef enum type Type_t;    // Neuron's type
+
+struct neuron {
+    Type_t type;
+    unsigned short *x;
+    double *w;
+    double threshold;
+    bool (* test)(struct neuron *);
+};
+
+typedef struct neuron Neuron_t;    // McCulloch and Pitts
 
 /* Function prototypes */
 
 /**
- * Function's documentation.
+ * Creates an artificial neuron ready to use.
+ *
+ * @param type Neuron's type.
+ * @param threshold Neuron's threshold.
+ * @return Pointer to the artifical neuron.
  */
-
+Neuron_t *create( Type_t type, double threshold );
 
 #endif

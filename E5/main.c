@@ -8,6 +8,6 @@
 #include "culloch_pitts.h"
 
 int main( void ) {
-
+    Neuron_t *neuron = create(AND, 0.7);
     return 0;
 }
