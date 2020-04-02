@@ -9,6 +9,6 @@
 #include "culloch_pitts.h"
 
 int main( void ) {
-    Neuron_t *neuron = create(AND);
+    Neuron_t *neuron = create(OR);
     return 0;
 }

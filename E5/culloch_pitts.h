@@ -26,7 +26,6 @@ typedef enum type Type_t;    // Neuron's type
 struct neuron {
     Type_t type;
     unsigned short *x;
-    unsigned int threshold;
     bool (* test)(struct neuron *);
 };
 
