@@ -13,7 +13,7 @@ DEFS =
 BIN = main
 
 # Object files from which $BIN depends
-OBJS = culloch_pitts.o
+OBJS = culloch_pitts.o interface.o
 
 # This default rule compiles the executable program
 $(BIN): $(OBJS) $(BIN).c

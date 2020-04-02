@@ -6,7 +6,7 @@
 // System and aplication specific headers
 // ------------------------------------------
 #include <stdio.h>
-#include "culloch_pitts.h"
+#include "interface.h"
 
 int main( void ) {
     Neuron_t *root = create(AND);
