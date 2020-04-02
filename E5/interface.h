@@ -25,8 +25,8 @@
 /* Function prototypes */
 
 /**
- * Function's documentation.
+ * A little description about the program's behaviour.
  */
-
+void initialGuide( void );
 
 #endif

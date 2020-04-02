@@ -5,16 +5,10 @@
 // ------------------------------------------
 // System and aplication specific headers
 // ------------------------------------------
-#include <stdio.h>
 #include "interface.h"
 
 int main( void ) {
-    Neuron_t *root = create(AND);
-    connect(root, create(NOT));
-    root->x[0] = 1;
-    root->x[1] = 1;
-
-    printf("%s\n", testNetwork(root) ? "true" : "false");
+    initialGuide();
 
     return 0;
 }
