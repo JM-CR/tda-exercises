@@ -5,9 +5,10 @@
 // ------------------------------------------
 // System and aplication specific headers
 // ------------------------------------------
+#include <stdio.h>
 #include "culloch_pitts.h"
 
 int main( void ) {
-    Neuron_t *neuron = create(AND, 0.7);
+    Neuron_t *neuron = create(AND);
     return 0;
 }

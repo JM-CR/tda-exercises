@@ -15,12 +15,6 @@
 // Private elements
 // -----------------------------
 
-/* Private macros and constants */
-
-/* Private types */
-
-/* Private global variables */
-
 /* Private functions */
 
 /**
@@ -50,7 +44,7 @@ static bool or( Neuron_t *self ) {
  * @return True when the neuron activates; otherwirse, false.
  */
 static bool not( Neuron_t *self ) {
-    return self->x == 0 ? true : false;
+    return *self->x != self->threshold ? true : false;
 }
 
 /**
@@ -60,9 +54,7 @@ static bool not( Neuron_t *self ) {
  * @return True when the neuron activates; otherwirse, false.
  */
 static bool xor( Neuron_t *self ) {
-    short firstPart = self->x[0] - self->x[1];
-    short secondPart = self->x[1] - self->x[0];
-    return (firstPart + secondPart) >= self->threshold ? true : false;
+    return self->x[0] != self->x[1] ? true : false;
 }
 
 
@@ -72,21 +64,20 @@ static bool xor( Neuron_t *self ) {
 
 /* Implementation of the public functions */
 
-Neuron_t *create( Type_t type, double threshold ) {
+Neuron_t *create( Type_t type ) {
     // Create
     static bool (* operations[])(Neuron_t *) = { and, or, not, xor };
+    static unsigned int threshold[] = { 2, 1, 0, 1 };
     Neuron_t *neuron = malloc(sizeof(Neuron_t));
 
     // Assignment
     if ( type != NOT ) {
         neuron->x = calloc(2, sizeof(short));
-        neuron->w = calloc(2, sizeof(double));
     } else {
         neuron->x = malloc(sizeof(short));
-        neuron->w = malloc(sizeof(double));
     }
     neuron->type = type;
-    neuron->threshold = threshold;
+    neuron->threshold = threshold[type];
     neuron->test = operations[type];
 
     return neuron;
