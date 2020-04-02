@@ -1,4 +1,4 @@
-// See library.h for more info
+// See culloc_pitts.h for more info
 // Author: Josue Mosiah Contreras Rocha
 // File: culloch_pitts.c
 // Date: 31/03/20
@@ -77,6 +77,40 @@ Neuron_t *create( Type_t type ) {
     }
     neuron->type = type;
     neuron->test = operations[type];
+    neuron->next = NULL;
 
     return neuron;
+}
+
+void connect( Neuron_t *root, Neuron_t *insert ) {
+    // Guards
+    if ( root == NULL || insert == NULL ) {
+        return;
+    }
+
+    // Add neuron
+    while( root->next != NULL ) {
+        root = root->next;
+    }
+    root->next = insert;
+}
+
+bool testNetwork( Neuron_t *root ) {
+    // Guard
+    if ( root == NULL ) {
+        return false;
+    }
+
+    if ( root->next == NULL ) {
+        return root->test(root);
+    }
+
+    // Traverse
+    while ( root->next != NULL ) {
+        root->next->x[0] = root->test(root);  /* Update entry */
+        root = root->next;
+    }
+
+    // Final test
+    return root->test(root);
 }

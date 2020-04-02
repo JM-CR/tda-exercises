@@ -27,6 +27,7 @@ struct neuron {
     Type_t type;
     unsigned short *x;
     bool (* test)(struct neuron *);
+    struct neuron *next;
 };
 
 typedef struct neuron Neuron_t;    // McCulloch and Pitts
@@ -40,5 +41,22 @@ typedef struct neuron Neuron_t;    // McCulloch and Pitts
  * @return Pointer to the artifical neuron.
  */
 Neuron_t *create( Type_t type );
+
+/**
+ * Connects new neurons.
+ * 
+ * @param root Initial neuron.
+ * @param insert New neuron.
+ */
+void connect( Neuron_t *root, Neuron_t *insert );
+
+/**
+ * Perfoms the logical test from the neuronal network.
+ *
+ * @param root Initial neuron.
+ * @return True if the network activates; otherwise, false. 
+ */
+bool testNetwork( Neuron_t *root );
+
 
 #endif

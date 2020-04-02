@@ -9,6 +9,12 @@
 #include "culloch_pitts.h"
 
 int main( void ) {
-    Neuron_t *neuron = create(OR);
+    Neuron_t *root = create(AND);
+    connect(root, create(NOT));
+    root->x[0] = 1;
+    root->x[1] = 1;
+
+    printf("%s\n", testNetwork(root) ? "true" : "false");
+
     return 0;
 }
