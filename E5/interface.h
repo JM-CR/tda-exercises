@@ -44,4 +44,11 @@ Type_t chooseNeuron( void );
  */
 bool askConnection( void );
 
+/**
+ * Reads the required value for each neuron.
+ *
+ * @param root First neuron.
+ */
+void askInputValues( Neuron_t *root );
+
 #endif

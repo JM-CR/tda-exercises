@@ -114,3 +114,13 @@ bool testNetwork( Neuron_t *root ) {
     // Final test
     return root->test(root);
 }
+
+void setValue( Neuron_t *neuron, unsigned int at, unsigned short to ) {
+    // Guards
+    if ( neuron == NULL || at > 1 || to > 1 ) {
+        return;
+    }
+
+    // Set
+    neuron->x[at] = to;
+}

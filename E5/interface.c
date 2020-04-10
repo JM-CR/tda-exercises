@@ -7,18 +7,13 @@
 // System and aplication specific headers
 // ------------------------------------------
 #include <stdio.h>
+#include <limits.h>
 #include "interface.h"
 
 
 // -----------------------------
 // Private elements
 // -----------------------------
-
-/* Private macros and constants */
-
-/* Private types */
-
-/* Private global variables */
 
 /* Private functions */
 
@@ -31,9 +26,9 @@
  */
 static void readOption( int *state, int lower, int upper ) {
     // Read
-    int option = 0;
+    int option = INT_MAX;
+    printf("-> ");
     do {
-        printf("-> ");
         scanf("%d", &option);
         setbuf(stdin, NULL);
     } while ( option < lower || option > upper );
@@ -69,7 +64,7 @@ Type_t chooseNeuron( void ) {
     // Display
     printf(
         "\n------------------------\n\n"
-        "Elige el tipo de neurona a crear: \n"
+        "Elige el tipo de neurona:\n\n"
         "  1. AND\n"
         "  2. OR\n"
         "  3. NOT\n"
@@ -87,7 +82,7 @@ bool askConnection( void ) {
     // Display
     printf(
         "\n------------------------\n\n"
-        "¿Conectar con otra? \n"
+        "¿Conectar con otra? \n\n"
         "  1. Sí\n"
         "  2. No\n\n"
     );
@@ -96,4 +91,52 @@ bool askConnection( void ) {
 
     // Translate
     return option == 1 ? true : false;
+}
+
+void askInputValues( Neuron_t *root ) {
+    // Guard
+    if ( root == NULL ) {
+        return;
+    }
+
+    // Display
+    printf(
+        "\n------------------------\n\n"
+        "Ingresar valores de entrada para cada neurona:\n\n"
+        "  False = 0\n"
+        "  True = 1\n\n"
+    );
+
+    // Translate
+    int option;
+    unsigned int id = 1;
+    while ( root != NULL ) {
+        // Get value
+        for ( int input = 1; input <= 2; ++input ) {
+            // Guards
+            if ( id > 1 && root->type == NOT ) {
+                break;
+            } else if ( id > 1 ) {
+                input = 2;
+            }
+
+            // Process
+            printf("N(%d, %d) ", id, input);
+            readOption(&option, 0, 1);
+
+            // Check
+            if ( id == 1 && root->type == NOT ) {
+                setValue(root, 0, option);
+                break;
+            } else if ( id == 1 ) {
+                setValue(root, input - 1 , option);
+            } else {
+                setValue(root, 1, option);
+            }
+        }
+
+        // Update values
+        root = root->next;
+        id++;
+    }
 }

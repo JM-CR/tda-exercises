@@ -8,9 +8,12 @@
 #include "interface.h"
 
 int main( void ) {
+    Neuron_t *root = create(AND);
+
     initialGuide();
     chooseNeuron();
     askConnection();
+    askInputValues(root);
 
     return 0;
 }
