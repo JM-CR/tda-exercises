@@ -29,4 +29,18 @@
  */
 void initialGuide( void );
 
+/**
+ * Displays a menu that allows the creation of a neuron.
+ *
+ * @return Chosen option.
+ */
+int chooseNeuron( void );
+
+/**
+ * Displays a menu that indicates if a new connection is required.
+ *
+ * @return Chosen option.
+ */
+int askConnection( void );
+
 #endif

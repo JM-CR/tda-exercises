@@ -9,6 +9,8 @@
 
 int main( void ) {
     initialGuide();
+    chooseNeuron();
+    askConnection();
 
     return 0;
 }
