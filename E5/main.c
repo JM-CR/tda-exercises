@@ -22,14 +22,12 @@ int main( void ) {
     }
 
     // Get values
+    globalState(root);
     askInputValues(root);
 
     // Results
     bool result = testNetwork(root);
-    printf(
-        "\nRed neuronal %s con las entradas dadas.\n\n", 
-        result ? "encendida" : "apagada"
-    );
+    printf("\nRed neuronal %s.\n\n", result ? "encendida" : "apagada");
 
     return 0;
 }

@@ -102,9 +102,9 @@ void askInputValues( Neuron_t *root ) {
     // Display
     printf(
         "\n------------------------\n\n"
-        "Ingresar valores de entrada para cada neurona:\n\n"
-        "  False = 0\n"
-        "  True = 1\n\n"
+        "Ingresa los valores de entrada para cada neurona:\n\n"
+        "  True = 1\n"
+        "  False = 0\n\n"
     );
 
     // Translate
@@ -121,7 +121,7 @@ void askInputValues( Neuron_t *root ) {
             }
 
             // Process
-            printf("N(%d, %d) ", id, input);
+            printf("N(%d,%d) ", id, input);
             readOption(&option, 0, 1);
 
             // Check
@@ -138,5 +138,26 @@ void askInputValues( Neuron_t *root ) {
         // Update values
         root = root->next;
         id++;
+    }
+}
+
+void globalState( Neuron_t *root ) {
+    // Guard
+    if ( root == NULL ) {
+        return;
+    }
+
+    // Display
+    printf(
+        "\n------------------------\n\n"
+        "Conexiones creadas (id, tipo):\n\n"
+    );
+    
+    // Translate
+    unsigned int id = 1;
+    char *name[] = { "AND", "OR", "NOT", "XOR" };
+    while ( root != NULL ) {
+        printf("(%d, %s) %s ", id++, name[root->type], root->next ? "->" : "\n");
+        root = root->next;
     }
 }

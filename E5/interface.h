@@ -45,4 +45,11 @@ bool askConnection( void );
  */
 void askInputValues( Neuron_t *root );
 
+/**
+ * Displays the connection's state.
+ *
+ * @param root First neuron.
+ */
+void globalState( Neuron_t *root );
+
 #endif
