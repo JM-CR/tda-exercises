@@ -9,6 +9,7 @@
 // -----------------------------
 // System headers
 // -----------------------------
+#include <stdbool.h>
 #include "culloch_pitts.h"
 
 
@@ -32,15 +33,15 @@ void initialGuide( void );
 /**
  * Displays a menu that allows the creation of a neuron.
  *
- * @return Chosen option.
+ * @return Chosen type.
  */
-int chooseNeuron( void );
+Type_t chooseNeuron( void );
 
 /**
  * Displays a menu that indicates if a new connection is required.
  *
- * @return Chosen option.
+ * @return True for new; otherwise, false.
  */
-int askConnection( void );
+bool askConnection( void );
 
 #endif

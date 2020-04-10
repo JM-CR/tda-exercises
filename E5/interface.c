@@ -65,7 +65,7 @@ void initialGuide( void ) {
     );
 }
 
-int chooseNeuron( void ) {
+Type_t chooseNeuron( void ) {
     // Display
     printf(
         "\n------------------------\n\n"
@@ -75,14 +75,15 @@ int chooseNeuron( void ) {
         "  3. NOT\n"
         "  4. XOR\n\n"
     );
-
-    // Choose
     int option;
     readOption(&option, 1, 4);
-    return option;
+
+    // Translate
+    Type_t type[] = { AND, OR, NOT, XOR };
+    return type[option - 1];
 }
 
-int askConnection( void ) {
+bool askConnection( void ) {
     // Display
     printf(
         "\n------------------------\n\n"
@@ -90,9 +91,9 @@ int askConnection( void ) {
         "  1. Sí\n"
         "  2. No\n\n"
     );
-
-    // Choose
     int option;
     readOption(&option, 1, 2);
-    return option;
+
+    // Translate
+    return option == 1 ? true : false;
 }

@@ -58,5 +58,4 @@ void connect( Neuron_t *root, Neuron_t *insert );
  */
 bool testNetwork( Neuron_t *root );
 
-
 #endif
