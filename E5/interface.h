@@ -17,12 +17,6 @@
 // Public interface
 // -----------------------------
 
-/* Constants */
-
-/* Types declarations */
-
-/* Global variables */
-
 /* Function prototypes */
 
 /**

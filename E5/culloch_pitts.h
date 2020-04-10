@@ -59,11 +59,11 @@ void connect( Neuron_t *root, Neuron_t *insert );
 bool testNetwork( Neuron_t *root );
 
 /**
- * Sets the value for a neuron.
+ * Sets an entry value for a neuron.
  * 
  * @param neuron Neuron to set.
  * @param at Array index.
- * @param to Value to apply.
+ * @param to New value.
  */
 void setValue( Neuron_t *neuron, unsigned int at, unsigned short to );
 

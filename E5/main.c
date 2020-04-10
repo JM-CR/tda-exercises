@@ -5,15 +5,31 @@
 // ------------------------------------------
 // System and aplication specific headers
 // ------------------------------------------
+#include <stdio.h>
+#include <stdbool.h>
 #include "interface.h"
 
 int main( void ) {
-    Neuron_t *root = create(AND);
-
+    // Initialize
     initialGuide();
-    chooseNeuron();
-    askConnection();
+    Type_t type = chooseNeuron();
+    Neuron_t *root = create(type);
+    
+    // More neurons?
+    while ( askConnection() ) {
+        type = chooseNeuron();
+        connect(root, create(type));
+    }
+
+    // Get values
     askInputValues(root);
+
+    // Results
+    bool result = testNetwork(root);
+    printf(
+        "\nRed neuronal %s con las entradas dadas.\n\n", 
+        result ? "encendida" : "apagada"
+    );
 
     return 0;
 }
