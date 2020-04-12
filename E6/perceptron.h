@@ -1,10 +1,10 @@
 // This library implements the Hebb's algorithm for neuronal networks.
 // Author: Josue Mosiah Contreras Rocha
-// File: rosenblatt.h
+// File: perceptron.h
 // Date: 11/04/20
 
-#ifndef ROSENBLATT_H
-#define ROSENBLATT_H
+#ifndef PERCEPTRON_H
+#define PERCEPTRON_H
 
 // -----------------------------
 // System headers
@@ -34,16 +34,18 @@ struct neuron {
     struct neuron *previous;
 };
 
-typedef struct neuron Neuron_t;    // Rosenblatt
+typedef struct neuron Neuron_t;    // perceptron
 
 /* Function prototypes */
 
 /**
- * Creates a new neuron.
+ * Creates a fully connected perceptron.
  *
- * @param totalInputs Number of inputs.
- * @return Pointer to the object.
+ * @param layer Number of layers (maximum three).
+ * @param row Number of rows (maximum three).
+ * @param input Number of inputs.
+ * @param output Number of outputs.
  */
-Neuron_t *create( size_t totalInputs );
+Neuron_t *newPerceptron( size_t layer, size_t row, size_t input, size_t output );
 
 #endif

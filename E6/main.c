@@ -5,9 +5,9 @@
 // ------------------------------------------
 // System and aplication specific headers
 // ------------------------------------------
-#include "rosenblatt.h"
+#include "perceptron.h"
 
 int main( void ) {
-    create(3);
+    newPerceptron(3, 2, 2, 2);
     return 0;
 }

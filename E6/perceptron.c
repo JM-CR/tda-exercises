@@ -1,6 +1,6 @@
-// See rosenblatt.h for more info
+// See perceptron.h for more info
 // Author: Josue Mosiah Contreras Rocha
-// File: rosenblatt.c
+// File: perceptron.c
 // Date: 11/04/20
 
 // ------------------------------------------
@@ -9,7 +9,7 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <time.h>
-#include "rosenblatt.h"
+#include "perceptron.h"
 
 
 // -----------------------------
@@ -76,14 +76,13 @@ bool isActive( Neuron_t *neuron ) {
     return neuron->getOutput(neuron) >= THRESHOLD ? true : false;
 }
 
-
-// -----------------------------
-// Public elements
-// -----------------------------
-
-/* Implementation of the public functions */
-
-Neuron_t *create( size_t totalInputs ) {
+/**
+ * Creates a new neuron.
+ *
+ * @param totalInputs Number of inputs.
+ * @return Pointer to the object.
+ */
+static Neuron_t *create( size_t totalInputs ) {
     // Create
     Neuron_t *neuron = malloc(sizeof(Neuron_t));
 
@@ -98,4 +97,26 @@ Neuron_t *create( size_t totalInputs ) {
     // Fill
     getWeights(neuron);
     return neuron;
+}
+
+/**
+ * Connects two neurons.
+ *
+ * @param neuron Base neuron.
+ * @param with Target neuron.
+ */
+void connect( Neuron_t *neuron, Neuron_t *with ) {
+    neuron->next = with;
+    with->previous = neuron;
+}
+
+
+// -----------------------------
+// Public elements
+// -----------------------------
+
+/* Implementation of the public functions */
+
+Neuron_t *newPerceptron( size_t layer, size_t row, size_t input, size_t output ) {
+    return NULL;
 }
