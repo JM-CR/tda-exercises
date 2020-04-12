@@ -8,6 +8,6 @@
 #include "rosenblatt.h"
 
 int main( void ) {
-
+    create(3);
     return 0;
 }

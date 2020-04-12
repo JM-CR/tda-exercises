@@ -9,6 +9,8 @@
 // -----------------------------
 // System headers
 // -----------------------------
+#include <stdbool.h>
+#include <stddef.h>
 
 
 // -----------------------------
@@ -17,15 +19,31 @@
 
 /* Constants */
 
+#define N 0.01
+#define THRESHOLD 0.7
+
 /* Types declarations */
 
-/* Global variables */
+struct neuron {
+    double *x;
+    double *w;
+    unsigned int totalInputs;
+    bool (* isActive)(struct neuron *);
+    double (* getOutput)(struct neuron *);
+    struct neuron *next;
+    struct neuron *previous;
+};
+
+typedef struct neuron Neuron_t;    // Rosenblatt
 
 /* Function prototypes */
 
 /**
- * Function's documentation.
+ * Creates a new neuron.
+ *
+ * @param totalInputs Number of inputs.
+ * @return Pointer to the object.
  */
-
+Neuron_t *create( size_t totalInputs );
 
 #endif
