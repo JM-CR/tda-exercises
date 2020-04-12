@@ -16,12 +16,6 @@
 // Private elements
 // -----------------------------
 
-/* Private macros and constants */
-
-/* Private types */
-
-/* Private global variables */
-
 /* Private functions */
 
 /**
@@ -46,8 +40,8 @@ static double randomNumber( void ) {
  *
  * @param neuron Neuron to initializate.
  */
-static void getWeights( Neuron_t *neuron ) {
-	for ( unsigned int i = 0; i < neuron->totalInputs; ++i ) {
+static void randomWeights( Neuron_t *neuron ) {
+	for ( unsigned int i = 0; i < neuron->totalInput; ++i ) {
         neuron->w[i] = randomNumber();
     }
 }
@@ -60,7 +54,7 @@ static void getWeights( Neuron_t *neuron ) {
  */
 double getOutput( Neuron_t *neuron ) {
     double result = 0.0;
-    for ( unsigned int i = 0; i < neuron->totalInputs; ++i ) {
+    for ( unsigned int i = 0; i < neuron->totalInput; ++i ) {
         result += neuron->x[i] * neuron->w[i];
     }
     return result;
@@ -79,35 +73,43 @@ bool isActive( Neuron_t *neuron ) {
 /**
  * Creates a new neuron.
  *
- * @param totalInputs Number of inputs.
+ * @param input Number of inputs.
  * @return Pointer to the object.
  */
-static Neuron_t *create( size_t totalInputs ) {
+static Neuron_t *newNeuron( size_t input ) {
     // Create
     Neuron_t *neuron = malloc(sizeof(Neuron_t));
 
     // Assignment
-    neuron->x = calloc(totalInputs, sizeof(double));
-    neuron->w = calloc(totalInputs, sizeof(double));
-    neuron->totalInputs = totalInputs;
+    neuron->x = calloc(input, sizeof(double));
+    neuron->w = calloc(input, sizeof(double));
+    neuron->totalInput = input;
     neuron->getOutput = getOutput;
     neuron->isActive = isActive;
-    neuron->next = neuron->previous = NULL;
 
     // Fill
-    getWeights(neuron);
+    randomWeights(neuron);
     return neuron;
 }
 
 /**
- * Connects two neurons.
+ * Creates a new layer.
  *
- * @param neuron Base neuron.
- * @param with Target neuron.
+ * @param in Number of inputs.
+ * @param total Number of neurons.
+ * @return Array with the layer.
  */
-void connect( Neuron_t *neuron, Neuron_t *with ) {
-    neuron->next = with;
-    with->previous = neuron;
+static Neuron_t **createLayer( size_t in, size_t total ) {
+    // Create
+    Neuron_t **layer = calloc(total + 1, sizeof(Neuron_t));
+
+    // Fill
+    for ( unsigned int i = 0; i < total; ++i ) {
+        layer[i] = newNeuron(in);
+    }
+    layer[total] = NULL;   /* Last element */
+    
+    return layer;
 }
 
 
@@ -117,6 +119,33 @@ void connect( Neuron_t *neuron, Neuron_t *with ) {
 
 /* Implementation of the public functions */
 
-Neuron_t *newPerceptron( size_t layer, size_t row, size_t input, size_t output ) {
-    return NULL;
+Perceptron_t *newPerceptron( size_t layer, size_t iNeuron, size_t in, size_t out ) {
+    // Guards
+    if ( layer == 0 || layer > 3 || iNeuron == 0 || iNeuron > 3 ) {
+        return NULL;
+    }
+
+    if ( in == 0 || out == 0 || in > 4 || out > 4 ) {
+        return NULL;
+    }
+
+    // Create layers
+    size_t hiddenInput = iNeuron >= out ? iNeuron : out;
+    Neuron_t **inputLayer = createLayer(in, iNeuron);
+    Neuron_t **hiddenLayer = NULL, **outputLayer = NULL;
+
+    if ( layer == 2 ) {
+        outputLayer = createLayer(hiddenInput, out);
+    } else {
+        outputLayer = createLayer(hiddenInput, out);
+        hiddenLayer = createLayer(iNeuron, hiddenInput);
+    }
+
+    // Container
+    Perceptron_t *perceptron = malloc(sizeof(Perceptron_t));
+    perceptron->inputLayer = inputLayer;
+    perceptron->hiddenLayer = hiddenLayer;
+    perceptron->outputLayer = outputLayer;
+
+    return perceptron;
 }

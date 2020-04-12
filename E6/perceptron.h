@@ -27,25 +27,32 @@
 struct neuron {
     double *x;
     double *w;
-    unsigned int totalInputs;
+    size_t totalInput;
     bool (* isActive)(struct neuron *);
     double (* getOutput)(struct neuron *);
-    struct neuron *next;
-    struct neuron *previous;
 };
 
-typedef struct neuron Neuron_t;    // perceptron
+typedef struct neuron Neuron_t;
+
+struct perceptron {
+    Neuron_t **inputLayer;
+    Neuron_t **hiddenLayer;
+    Neuron_t **outputLayer;
+};
+
+typedef struct perceptron Perceptron_t;
 
 /* Function prototypes */
 
 /**
- * Creates a fully connected perceptron.
+ * Creates a generic perceptron.
  *
  * @param layer Number of layers (maximum three).
- * @param row Number of rows (maximum three).
- * @param input Number of inputs.
- * @param output Number of outputs.
+ * @param iNeuron Number of neurons at the input layer (maximum three).
+ * @param in Number of inputs (maximum four).
+ * @param out Number of outputs (maximum four).
+ * @return Pointer to the new perceptron.
  */
-Neuron_t *newPerceptron( size_t layer, size_t row, size_t input, size_t output );
+Perceptron_t *newPerceptron( size_t layer, size_t iNeuron, size_t in, size_t out );
 
 #endif

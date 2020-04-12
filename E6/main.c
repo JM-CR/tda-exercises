@@ -8,6 +8,6 @@
 #include "perceptron.h"
 
 int main( void ) {
-    newPerceptron(3, 2, 2, 2);
+    newPerceptron(3, 2, 2, 1);
     return 0;
 }
