@@ -42,6 +42,13 @@ struct perceptron {
 
 typedef struct perceptron Perceptron_t;
 
+struct record {
+    double in[2];
+    double out;
+};
+
+typedef struct record Record_t;   // CSV
+
 /* Function prototypes */
 
 /**
@@ -54,5 +61,14 @@ typedef struct perceptron Perceptron_t;
  * @return Pointer to the new perceptron.
  */
 Perceptron_t *newPerceptron( size_t layer, size_t iNeuron, size_t in, size_t out );
+
+/**
+ * Loads one of the template files as a training set.
+ *
+ * @param filename File to read.
+ * @param in Number of input columns (maximum two).
+ * @return Array with the records.
+ */
+Record_t **loadSample( const char *filename, size_t in );
 
 #endif

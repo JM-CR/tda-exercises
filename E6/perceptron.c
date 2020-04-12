@@ -6,9 +6,11 @@
 // ------------------------------------------
 // System and aplication specific headers
 // ------------------------------------------
+#include <time.h>
+#include <stdio.h>
+#include <string.h>
 #include <stdbool.h>
 #include <stdlib.h>
-#include <time.h>
 #include "perceptron.h"
 
 
@@ -148,4 +150,41 @@ Perceptron_t *newPerceptron( size_t layer, size_t iNeuron, size_t in, size_t out
     perceptron->outputLayer = outputLayer;
 
     return perceptron;
+}
+
+Record_t **loadSample( const char *filename, size_t in ) {
+    // Guards
+    if ( in > 2 || in == 0 ) {
+        return NULL;
+    }
+
+    char *dir = "./training_files/";
+    char *path = malloc(strlen(dir) + strlen(filename) + 1);
+    strcpy(path, dir);
+    strcat(path, filename);
+    FILE *fp = fopen(path, "r");
+    if ( fp == NULL ) {
+        fprintf(stderr, "\nError leyendo archivo.\n");
+        return NULL;
+    }
+
+    // Create
+    size_t max = 2 * in;
+    Record_t **record = calloc(max, sizeof(Record_t));
+
+    // Read
+    for ( unsigned int i = 0; i < max; ++i ) {
+        record[i] = malloc(sizeof(Record_t));
+        if ( in == 1 ) {
+            fscanf(fp, "%lf,%lf\n", &record[i]->in[0], &record[i]->out);
+        } else {
+            fscanf(
+                fp, 
+                "%lf,%lf,%lf", 
+                &record[i]->in[0], &record[i]->in[1], &record[i]->out
+            );
+        }
+    }
+
+    return record;
 }

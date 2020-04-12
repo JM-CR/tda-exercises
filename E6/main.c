@@ -9,5 +9,6 @@
 
 int main( void ) {
     newPerceptron(3, 2, 2, 1);
+    loadSample("and.csv", 2);
     return 0;
 }
