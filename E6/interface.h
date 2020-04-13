@@ -41,4 +41,12 @@ unsigned int askValue( char *text, int lower, int upper );
  */
 char *askFile( void );
 
+/**
+ * Asks to the user the inputs to test the network.
+ *
+ * @param in Number of inputs to read.
+ * @return Array with the values.
+ */
+unsigned int *askInputs( size_t in );
+
 #endif

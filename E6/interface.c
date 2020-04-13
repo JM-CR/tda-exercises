@@ -7,6 +7,7 @@
 // System and aplication specific headers
 // ------------------------------------------
 #include <stdio.h>
+#include <stdlib.h>
 #include <limits.h>
 #include "interface.h"
 
@@ -94,4 +95,40 @@ char *askFile( void ) {
     // Translate
     char *files[] = { "and.csv", "or.csv", "not.csv", "xor.csv" };
     return files[option - 1];
+}
+
+
+unsigned int *askInputs( size_t in ) {
+    // Display
+    static bool firstRun = true;
+    if ( firstRun ) {
+        printf(
+            "\n------------------------\n\n"
+            "Perceptrón entrenado. "
+            "Ahora puedes ingresar valores para probarlo:\n\n"
+            "  False = 0\n"
+            "  True  = 1\n"
+            "  Salir = 2\n\n"
+        );
+        firstRun = false;
+    } else {
+        printf("\n------------------------\n\n");
+    }
+
+    // Ask
+    unsigned int *values = calloc(in, sizeof(int));
+    for ( unsigned int i = 0; i < in; ++i ) {
+        printf("Valor de x[%u]", i);
+        int value;
+        readOption(&value, 0, 2);
+        values[i] = value;
+
+        // Quit
+        if ( value == 2 ) {
+            exit(0);
+        }
+    }
+
+    // Translate
+    return values;
 }

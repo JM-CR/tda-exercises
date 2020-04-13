@@ -34,6 +34,9 @@ int main( void ) {
     plot(commands, length);
 
     // Test network
+    while ( true ) {
+        unsigned int *inputs = askInputs(in);
+    }
 
     return 0;
 }
