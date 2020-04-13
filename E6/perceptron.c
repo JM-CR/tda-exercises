@@ -18,6 +18,10 @@
 // Private elements
 // -----------------------------
 
+/* Private constants */
+
+#define TRAINING_CYCLES 150
+
 /* Private functions */
 
 /**
@@ -87,7 +91,6 @@ static Neuron_t *newNeuron( size_t input ) {
     neuron->w = calloc(input, sizeof(double));
     neuron->error = 0.0;
     neuron->totalInput = input;
-    neuron->isActive = isActive;
 
     // Fill
     randomWeights(neuron);
@@ -151,16 +154,75 @@ static void updateLayerError( Neuron_t **initialLayer, Neuron_t **nextLayer, siz
 }
 
 /**
- * Calculates the error on the output layer.
+ * Calculates the error for a single layer perceptron.
  *
  * @param layer Layer to update.
+ * @param expectedValue Output value from the training set.
+ * @param position Neuron to update in the layer.
  */
-static void updateOutputError( Neuron_t **layer, double expectedValue ) {
-    unsigned int iCur = 1;
-    Neuron_t *current = layer[0];
-    while ( current != NULL ) {
-        current->error = expectedValue - getOutput(current);
-        current = layer[iCur++];
+static void updateError( Neuron_t **layer, double expectedValue, size_t position ) {
+    // Guard
+    if ( layer == NULL ) {
+        return;
+    }
+
+    // Calculation
+    Neuron_t *current = layer[position];
+    layer[position]->error = expectedValue - getOutput(current);
+}
+
+/**
+ * Trains a single layer perceptron. No hidden or output layer is needed
+ *
+ * @param set Training set.
+ * @param layer Layer to train.
+ */
+static void singleTraining( Record_t **set, Neuron_t **layer ) {
+    // Initialize
+    unsigned int iRec, iNeu;
+    Record_t *currentRecord;
+    Neuron_t *currentNeuron;
+
+    // Start training
+    for ( unsigned int i = 0; i < TRAINING_CYCLES; ++i ) {
+        // Initial setup
+        iRec = iNeu = 0;
+        currentRecord = set[0];
+        currentNeuron = layer[0];
+        
+        // Test samples
+        while ( currentNeuron != NULL ) {
+            printf("\n-------------");
+            while ( currentRecord != NULL ) {
+                // Insert values
+                currentNeuron->x = currentRecord->in;
+
+                // Guard
+                printf(
+                    "\n%5s %lf", 
+                    isActive(currentNeuron) ? "true" : "false",
+                    getOutput(currentNeuron)
+                );
+
+                if ( isActive(currentNeuron) == currentRecord->out ) {
+                    currentRecord = set[++iRec];
+                    continue;
+                }
+
+                // Update neuron
+                updateError(layer, currentRecord->out, iNeu);
+                for ( unsigned int i = 0; i < currentNeuron->totalInput; ++i ) {
+                    double error = currentNeuron->error;
+                    double x = currentNeuron->x[i];
+                    currentNeuron->w[i] += N * error * x;  /* Weight */
+                }
+
+                // Next cycle
+                currentRecord = set[++iRec];
+            }
+            // Next cycle
+            currentNeuron = layer[++iNeu];
+        }
     }
 }
 
@@ -177,7 +239,7 @@ Perceptron_t *newPerceptron( size_t layer, size_t iNeuron, size_t in, size_t out
         return NULL;
     }
 
-    if ( in == 0 || out == 0 || in > 4 || out > 4 ) {
+    if ( in == 0 || in > 3 || out > 2 ) {
         return NULL;
     }
 
@@ -188,7 +250,7 @@ Perceptron_t *newPerceptron( size_t layer, size_t iNeuron, size_t in, size_t out
 
     if ( layer == 2 ) {
         outputLayer = createLayer(hiddenInput, out);
-    } else {
+    } else if ( layer == 3 ) {
         outputLayer = createLayer(hiddenInput, out);
         hiddenLayer = createLayer(iNeuron, hiddenInput);
     }
@@ -208,6 +270,7 @@ Record_t **loadSample( const char *filename, size_t in ) {
         return NULL;
     }
 
+    // Open file
     char *dir = "./training_files/";
     char *path = malloc(strlen(dir) + strlen(filename) + 1);
     strcpy(path, dir);
@@ -218,9 +281,9 @@ Record_t **loadSample( const char *filename, size_t in ) {
         return NULL;
     }
 
-    // Create
+    // Initialize
     size_t max = 2 * in;
-    Record_t **record = calloc(max, sizeof(Record_t));
+    Record_t **record = calloc(max + 1, sizeof(Record_t));
 
     // Read
     for ( unsigned int i = 0; i < max; ++i ) {
@@ -235,13 +298,23 @@ Record_t **loadSample( const char *filename, size_t in ) {
             );
         }
     }
+    record[max] = NULL;  /* Ending element */
 
     return record;
 }
 
 bool train( Record_t **set, Perceptron_t *perceptron ) {
-    
-    updateLayerError(perceptron->inputLayer, perceptron->hiddenLayer, 1);
+    // Guards
+    if ( set == NULL || perceptron == NULL ) {
+        return false;
+    }
 
-    return false;
+    // Start training
+    if ( perceptron->outputLayer == NULL ) {
+        singleTraining(set, perceptron->inputLayer);
+    } else {
+
+    }
+
+    return true;
 }

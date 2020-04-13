@@ -29,7 +29,6 @@ struct neuron {
     double *w;
     double error;
     size_t totalInput;
-    bool (* isActive)(struct neuron *);
 };
 
 typedef struct neuron Neuron_t;
@@ -56,8 +55,8 @@ typedef struct record Record_t;   // CSV
  *
  * @param layer Number of layers (maximum three).
  * @param iNeuron Number of neurons at the input layer (maximum three).
- * @param in Number of inputs (maximum four).
- * @param out Number of outputs (maximum four).
+ * @param in Number of inputs (maximum three).
+ * @param out Number of neurons at the output layer (maximum two).
  * @return Pointer to the new perceptron.
  */
 Perceptron_t *newPerceptron( size_t layer, size_t iNeuron, size_t in, size_t out );
