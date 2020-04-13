@@ -7,6 +7,7 @@
 // System and aplication specific headers
 // ------------------------------------------
 #include <time.h>
+#include <math.h>
 #include <stdio.h>
 #include <string.h>
 #include <stdbool.h>
@@ -20,7 +21,8 @@
 
 /* Private constants */
 
-#define TRAINING_CYCLES 150
+#define TRAINING_CYCLES 120
+#define GNUPLOT_FILE "error.txt"
 
 /* Private functions */
 
@@ -182,11 +184,13 @@ static void singleTraining( Record_t **set, Neuron_t **layer ) {
     unsigned int iRec, iNeu;
     Record_t *currentRecord;
     Neuron_t *currentNeuron;
+    double data[2], totalError, lastError;
 
     // Start training
     for ( unsigned int i = 0; i < TRAINING_CYCLES; ++i ) {
         // Initial setup
         iRec = iNeu = 0;
+        totalError = 0.0;
         currentRecord = set[0];
         currentNeuron = layer[0];
         
@@ -204,6 +208,7 @@ static void singleTraining( Record_t **set, Neuron_t **layer ) {
 
                 // Update neuron
                 updateError(layer, currentRecord->out, iNeu);
+                lastError = totalError += fabs(currentNeuron->error);
                 for ( unsigned int i = 0; i < currentNeuron->totalInput; ++i ) {
                     double error = currentNeuron->error;
                     double x = currentNeuron->x[i];
@@ -216,6 +221,11 @@ static void singleTraining( Record_t **set, Neuron_t **layer ) {
             // Next cycle
             currentNeuron = layer[++iNeu];
         }
+
+        // Error graph
+        data[0] = i;
+        data[1] = totalError == 0 ? lastError : totalError;
+        saveState(GNUPLOT_FILE, data, 2);
     }
 }
 
@@ -313,6 +323,7 @@ bool train( Record_t **set, Perceptron_t *perceptron ) {
     }
 
     // Start training
+    removeFile(GNUPLOT_FILE);
     if ( perceptron->outputLayer == NULL ) {
         singleTraining(set, perceptron->inputLayer);
     } else {

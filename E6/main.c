@@ -20,6 +20,20 @@ int main( void ) {
     char *file = askFile();
     Record_t **set = loadSample(file, in);
     
-    // train(set, perceptron);
+    // Start training
+    train(set, perceptron);
+
+    // Create error graph
+    char *commands[] = {
+        "set title 'Error de entrenamiento'",
+        "set xlabel 'Ciclo'",
+        "set ylabel 'Error absoluto",
+        "plot 'error.txt' title '' with lines"
+    };
+    int length = sizeof(commands) / sizeof(char *);
+    plot(commands, length);
+
+    // Test network
+
     return 0;
 }

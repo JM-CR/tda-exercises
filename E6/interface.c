@@ -56,9 +56,12 @@ void initialGuide( void ) {
         "\t1. Máximo de capas = 3.\n"
         "\t2. Máximo de entradas = 3.\n"
         "\t3. Máximo de neuronas en la capa de entrada = 3.\n"
-        "\t4. Máximo de neuronas en la cada de salida = 2.\n"
-        "\t5. Los archivos de entrenamiento se encuentran en training_files/\n"
-        "\t6. Los valores del usuario deben ser coherentes para que funcione el programa.\n"
+        "\t4. Máximo de neuronas en la cada de salida = 2.\n\n"
+        "*Importante:\n"
+        "\t1. Los archivos de entrenamiento se encuentran en training_files/.\n"
+        "\t2. Los valores del usuario deben ser coherentes para que funcione el programa.\n"
+        "\t3. El funcionamiento no se garantiza para perceptrones mayores a 1 x 1 X 1.\n"
+        "\t4. Cuando converge, la gráfica muestra una línea completamente horizontal.\n"
     );
 }
 

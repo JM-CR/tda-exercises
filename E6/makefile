@@ -4,7 +4,7 @@
 CFLAGS = -Wall -g
 
 # External libraries
-LIBS = 
+LIBS = -lm
 
 # Pre-defined macros for conditional compilation
 DEFS =  
@@ -13,7 +13,7 @@ DEFS =
 BIN = main
 
 # Object files from which $BIN depends
-OBJS = perceptron.o interface.o
+OBJS = perceptron.o interface.o gnuplot.o
 
 # This default rule compiles the executable program
 $(BIN): $(OBJS) $(BIN).c
