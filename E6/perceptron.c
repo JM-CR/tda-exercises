@@ -192,18 +192,11 @@ static void singleTraining( Record_t **set, Neuron_t **layer ) {
         
         // Test samples
         while ( currentNeuron != NULL ) {
-            printf("\n-------------");
             while ( currentRecord != NULL ) {
                 // Insert values
                 currentNeuron->x = currentRecord->in;
 
                 // Guard
-                printf(
-                    "\n%5s %lf", 
-                    isActive(currentNeuron) ? "true" : "false",
-                    getOutput(currentNeuron)
-                );
-
                 if ( isActive(currentNeuron) == currentRecord->out ) {
                     currentRecord = set[++iRec];
                     continue;
@@ -224,6 +217,16 @@ static void singleTraining( Record_t **set, Neuron_t **layer ) {
             currentNeuron = layer[++iNeu];
         }
     }
+}
+
+/**
+ * Trains a multi layer perceptron.
+ *
+ * @param set Training set.
+ * @param perceptron Perceptron to train.
+ */
+static void multiTraining( Record_t **set, Perceptron_t *perceptron ) {
+
 }
 
 
@@ -313,7 +316,7 @@ bool train( Record_t **set, Perceptron_t *perceptron ) {
     if ( perceptron->outputLayer == NULL ) {
         singleTraining(set, perceptron->inputLayer);
     } else {
-
+        multiTraining(set, perceptron);
     }
 
     return true;
