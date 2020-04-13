@@ -8,7 +8,8 @@
 #include "perceptron.h"
 
 int main( void ) {
-    newPerceptron(3, 2, 2, 1);
-    loadSample("and.csv", 2);
+    Perceptron_t *perceptron = newPerceptron(3, 2, 2, 1);
+    Record_t **set = loadSample("and.csv", 2);
+    train(set, perceptron);
     return 0;
 }

@@ -27,9 +27,9 @@
 struct neuron {
     double *x;
     double *w;
+    double error;
     size_t totalInput;
     bool (* isActive)(struct neuron *);
-    double (* getOutput)(struct neuron *);
 };
 
 typedef struct neuron Neuron_t;
@@ -70,5 +70,14 @@ Perceptron_t *newPerceptron( size_t layer, size_t iNeuron, size_t in, size_t out
  * @return Array with the records.
  */
 Record_t **loadSample( const char *filename, size_t in );
+
+/**
+ * Starts the training of the neuronal network.
+ *
+ * @param set Training set.
+ * @param perceptron Perceptron to train.
+ * @return True if the network converges; otherwise, false.
+ */
+bool train( Record_t **set, Perceptron_t *perceptron );
 
 #endif

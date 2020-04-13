@@ -69,7 +69,7 @@ double getOutput( Neuron_t *neuron ) {
  * @return True if active; otherwise, false.
  */
 bool isActive( Neuron_t *neuron ) {
-    return neuron->getOutput(neuron) >= THRESHOLD ? true : false;
+    return getOutput(neuron) >= THRESHOLD ? true : false;
 }
 
 /**
@@ -85,8 +85,8 @@ static Neuron_t *newNeuron( size_t input ) {
     // Assignment
     neuron->x = calloc(input, sizeof(double));
     neuron->w = calloc(input, sizeof(double));
+    neuron->error = 0.0;
     neuron->totalInput = input;
-    neuron->getOutput = getOutput;
     neuron->isActive = isActive;
 
     // Fill
@@ -112,6 +112,56 @@ static Neuron_t **createLayer( size_t in, size_t total ) {
     layer[total] = NULL;   /* Last element */
     
     return layer;
+}
+
+/**
+ * Calculates the error in the first and second layer according 
+ * to the new hebb algorithm.
+ *
+ * @param initialLayer First layer.
+ * @param nextLayer Second layer.
+ * @param position Neuron to update in the initialLayer.
+ */
+static void updateLayerError( Neuron_t **initialLayer, Neuron_t **nextLayer, size_t position ) {
+    // Guards
+    if ( initialLayer == NULL || nextLayer == NULL ) {
+        return;
+    }
+    
+    // Initialize
+    double result = 0.0;
+    unsigned int iCur = 1;
+    Neuron_t *current = nextLayer[0];
+
+    // Get results
+    while ( current != NULL ) {
+        // Total weight
+        double totalWeight = 0.0;
+        for ( unsigned int i = 0; i < current->totalInput; ++i ) {
+            totalWeight += current->w[i];
+        }
+       
+       // Calculation
+        result += current->w[position] * current->error / totalWeight;
+        current = nextLayer[iCur++];
+    }
+
+    // Update
+    initialLayer[position]->error = result;
+}
+
+/**
+ * Calculates the error on the output layer.
+ *
+ * @param layer Layer to update.
+ */
+static void updateOutputError( Neuron_t **layer, double expectedValue ) {
+    unsigned int iCur = 1;
+    Neuron_t *current = layer[0];
+    while ( current != NULL ) {
+        current->error = expectedValue - getOutput(current);
+        current = layer[iCur++];
+    }
 }
 
 
@@ -187,4 +237,11 @@ Record_t **loadSample( const char *filename, size_t in ) {
     }
 
     return record;
+}
+
+bool train( Record_t **set, Perceptron_t *perceptron ) {
+    
+    updateLayerError(perceptron->inputLayer, perceptron->hiddenLayer, 1);
+
+    return false;
 }
