@@ -58,7 +58,7 @@ void initialGuide( void ) {
         "\t3. Máximo de neuronas en la capa de entrada = 3.\n"
         "\t4. Máximo de neuronas en la cada de salida = 2.\n"
         "\t5. Los archivos de entrenamiento se encuentran en training_files/\n"
-        "\t6. El programa no realiza validaciones de valores por consola.\n"
+        "\t6. Los valores del usuario deben ser coherentes para que funcione el programa.\n"
     );
 }
 
@@ -73,4 +73,22 @@ unsigned int askValue( char *text, int lower, int upper ) {
 
     // Translate
     return option;
+}
+
+char *askFile( void ) {
+    // Display
+    printf(
+        "\n------------------------\n\n"
+        "Elige el archivo de entrenamiento: \n\n"
+        "  1. and.csv\n"
+        "  2. or.csv\n"
+        "  3. not.csv\n"
+        "  4. xor.csv\n\n"
+    );
+    int option;
+    readOption(&option, 1, 4);
+
+    // Translate
+    char *files[] = { "and.csv", "or.csv", "not.csv", "xor.csv" };
+    return files[option - 1];
 }

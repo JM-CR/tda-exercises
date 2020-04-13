@@ -32,6 +32,13 @@ void initialGuide( void );
  * @param upper Maximum value.
  * @return Given value by the user.
  */
-unsigned int askValue( char *text, int lower, int upper  );
+unsigned int askValue( char *text, int lower, int upper );
+
+/**
+ * Displays a menu that loads the training set.
+ *
+ * @return File to load.
+ */
+char *askFile( void );
 
 #endif
