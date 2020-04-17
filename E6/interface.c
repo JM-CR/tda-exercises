@@ -61,7 +61,7 @@ void initialGuide( void ) {
         "*Importante:\n"
         "\t1. Los archivos de entrenamiento se encuentran en training_files/.\n"
         "\t2. Los valores del usuario deben ser coherentes para que funcione el programa.\n"
-        "\t3. El funcionamiento no se garantiza para perceptrones mayores a 1 x 1 X 1.\n"
+        "\t3. El funcionamiento no se garantiza para perceptrones mayores a 2 x 2 X 2.\n"
         "\t4. Cuando converge, la gráfica muestra una línea completamente horizontal.\n"
     );
 }

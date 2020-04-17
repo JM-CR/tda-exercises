@@ -49,6 +49,12 @@ static double randomNumber( void ) {
  * @param neuron Neuron to initializate.
  */
 static void randomWeights( Neuron_t *neuron ) {
+    // Guard
+    if ( neuron == NULL ) {
+        return;
+    }
+
+    // Create
 	for ( unsigned int i = 0; i < neuron->totalInput; ++i ) {
         neuron->w[i] = randomNumber();
     }
@@ -61,6 +67,12 @@ static void randomWeights( Neuron_t *neuron ) {
  * @return Result.
  */
 double getOutput( Neuron_t *neuron ) {
+    // Guard
+    if ( neuron == NULL ) {
+        return 0.0;
+    }
+
+    // Calculations
     double result = 0.0;
     for ( unsigned int i = 0; i < neuron->totalInput; ++i ) {
         result += neuron->x[i] * neuron->w[i];
@@ -174,58 +186,108 @@ static void updateError( Neuron_t **layer, double expectedValue, size_t position
 }
 
 /**
- * Trains a single layer perceptron. No hidden or output layer is needed
+ * Inserts the input values (x) for the layers.
  *
- * @param set Training set.
- * @param layer Layer to train.
+ * @param in Input values.
+ * @param perceptron Perceptron to train.
+ * @param current Neuron in use.
  */
-static void singleTraining( Record_t **set, Neuron_t **layer ) {
+static void insertInputs( double *in, Perceptron_t *perceptron, Neuron_t *current ) {
+    // Guards
+    if ( in == NULL || perceptron == NULL || current == NULL ) {
+        return;
+    }
+
     // Initialize
-    unsigned int iRec, iNeu;
-    Record_t *currentRecord;
-    Neuron_t *currentNeuron;
-    double data[2], totalError, lastError;
+    Neuron_t **iLayer = perceptron->inputLayer;
+    Neuron_t **hLayer = perceptron->hiddenLayer;
+    Neuron_t **oLayer = perceptron->outputLayer;
+    size_t total = current->totalInput;
 
-    // Start training
-    for ( unsigned int i = 0; i < TRAINING_CYCLES; ++i ) {
-        // Initial setup
-        iRec = iNeu = 0;
-        totalError = 0.0;
-        currentRecord = set[0];
-        currentNeuron = layer[0];
-        
-        // Test samples
-        while ( currentNeuron != NULL ) {
-            while ( currentRecord != NULL ) {
-                // Insert values
-                currentNeuron->x = currentRecord->in;
-
-                // Guard
-                if ( isActive(currentNeuron) == currentRecord->out ) {
-                    currentRecord = set[++iRec];
-                    continue;
-                }
-
-                // Update neuron
-                updateError(layer, currentRecord->out, iNeu);
-                lastError = totalError += fabs(currentNeuron->error);
-                for ( unsigned int i = 0; i < currentNeuron->totalInput; ++i ) {
-                    double error = currentNeuron->error;
-                    double x = currentNeuron->x[i];
-                    currentNeuron->w[i] += N * error * x;  /* Weight */
-                }
-
-                // Next cycle
-                currentRecord = set[++iRec];
-            }
-            // Next cycle
-            currentNeuron = layer[++iNeu];
+    // Insert
+    if ( oLayer == NULL ) {
+        current->x = in;
+    } else if ( hLayer == NULL ) {
+        for ( size_t i = 0; i < total; ++i ) {
+            iLayer[i]->x = in;
+            current->x[i] = getOutput(iLayer[i]);
         }
+    } else {
 
-        // Error graph
-        data[0] = i;
-        data[1] = totalError == 0 ? lastError : totalError;
-        saveState(GNUPLOT_FILE, data, 2);
+    }
+}
+
+/**
+ * Calculates the new error values for the layers.
+ *
+ * @param perceptron Perceptron to train.
+ * @param current Neuron in use.
+ * @param position Position of the current neuron.
+ * @param out Expected value
+ */
+static void setNewErrors( Perceptron_t *perceptron, Neuron_t *current, size_t position, double out ) {
+    // Initialize
+    Neuron_t **iLayer = perceptron->inputLayer;
+    Neuron_t **hLayer = perceptron->hiddenLayer;
+    Neuron_t **oLayer = perceptron->outputLayer;
+    size_t total = current->totalInput;
+
+    // Update
+    if ( oLayer == NULL ) {
+        updateError(iLayer, out, position);
+    } else if ( hLayer == NULL ) {
+        updateError(oLayer, out, position);
+        for ( size_t i = 0; i < total; ++i ) {
+            updateLayerError(iLayer, oLayer, i);
+        }
+    } else {
+
+    }
+}
+
+/**
+ * Updates the weights for a specific layer.
+ *
+ * @param layer Layer to update.
+ */
+static void setLayerWeight( Neuron_t **layer ) {
+    // Initialize
+    unsigned int index = 0;
+    Neuron_t *current = layer[index++];
+    size_t total = current->totalInput;
+
+    // Update weights
+    while ( current != NULL ) {
+        for ( size_t i = 0; i < total; ++i ) {
+            current->w[i] += N * current->error * current->x[i];
+        }
+        current = layer[index++];
+    }
+}
+
+/**
+ * Calculates the new weight values for the layers.
+ *
+ * @param perceptron Perceptron to train.
+ * @param current Neuron in use.
+ */
+static void setNewWeights( Perceptron_t *perceptron, Neuron_t *current ) {
+    // Initialize
+    Neuron_t **iLayer = perceptron->inputLayer;
+    Neuron_t **hLayer = perceptron->hiddenLayer;
+    Neuron_t **oLayer = perceptron->outputLayer;
+    size_t total = current->totalInput;
+
+    // Update neuron
+    for ( size_t i = 0; i < total; ++i ) {
+        current->w[i] += N * current->error * current->x[i];
+    }
+
+    // Update layers
+    if ( hLayer == NULL ) {
+        setLayerWeight(iLayer);
+    } else {
+
     }
 }
 
@@ -235,8 +297,51 @@ static void singleTraining( Record_t **set, Neuron_t **layer ) {
  * @param set Training set.
  * @param perceptron Perceptron to train.
  */
-static void multiTraining( Record_t **set, Perceptron_t *perceptron ) {
+static void startTraining( Record_t **set, Perceptron_t *perceptron ) {
+    // Initialize
+    Neuron_t **iLayer = perceptron->inputLayer;
+    Neuron_t **oLayer = perceptron->outputLayer;
+    Neuron_t *currentNeuron;
+    Record_t *currentRecord;
+    unsigned int iRec, iNeu;
+    double data[2], totalError, lastError;
 
+    // Start training
+    for ( unsigned int i = 0; i < TRAINING_CYCLES; ++i ) {
+        // Setup
+        totalError = iRec = iNeu = 0;
+        currentRecord = set[0];
+        currentNeuron = oLayer == NULL ? iLayer[0] : oLayer[0];
+        
+        // Test samples
+        while ( currentNeuron != NULL ) {
+            while ( currentRecord != NULL ) {
+                insertInputs(currentRecord->in, perceptron, currentNeuron);
+
+                // Guard
+                if ( isActive(currentNeuron) == currentRecord->out ) {
+                    currentRecord = set[++iRec];
+                    continue;
+                }
+
+                // Update values
+                setNewErrors(perceptron, currentNeuron, iNeu, currentRecord->out);
+                setNewWeights(perceptron, currentNeuron);
+                lastError = totalError += fabs(currentNeuron->error);
+
+                // Next cycle
+                currentRecord = set[++iRec];
+            }
+            
+            // Next cycle
+            currentNeuron = oLayer == NULL ? iLayer[++iNeu] : oLayer[++iNeu];
+        }
+
+        // Save values for the graph
+        data[0] = i;
+        data[1] = totalError == 0 ? lastError : totalError;
+        saveState(GNUPLOT_FILE, data, 2);
+    }
 }
 
 
@@ -322,13 +427,8 @@ bool train( Record_t **set, Perceptron_t *perceptron ) {
         return false;
     }
 
-    // Start training
+    // Processing
     removeFile(GNUPLOT_FILE);
-    if ( perceptron->outputLayer == NULL ) {
-        singleTraining(set, perceptron->inputLayer);
-    } else {
-        multiTraining(set, perceptron);
-    }
-
+    startTraining(set, perceptron);
     return true;
 }

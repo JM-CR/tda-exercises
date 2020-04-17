@@ -9,11 +9,19 @@
 
 int main( void ) {
     // Create perceptron
+    char *instructions[] = {
+        "Número de capas ",
+        "Número de neuronas en la capa de entrada ",
+        "Número de entradas por neurona ",
+        "Número de neuronas en la capa de salida "
+    };
+    
     initialGuide();
-    int layers = askValue("Número de capas ", 1, 3);
-    int iNeuron = askValue("Número de neuronas en la capa de entrada ", 1, 3);
-    int in = askValue("Número de entradas por neurona ", 1, 3);
-    int out = layers > 1 ? askValue("Número de neuronas en la capa de salida ", 1, 2) : 0;
+    int layers = askValue(instructions[0], 1, 3);
+    int iNeuron = askValue(instructions[1], 1, 3);
+    int in = askValue(instructions[2], 1, 3);
+    int out = layers > 1 ? askValue(instructions[3], 1, 2) : 0;
+
     Perceptron_t *perceptron = newPerceptron(layers, iNeuron, in, out);
 
     // Load training set
