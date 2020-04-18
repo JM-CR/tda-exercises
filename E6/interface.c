@@ -165,7 +165,7 @@ unsigned int *askInputs( size_t in ) {
 
         // Quit
         if ( value == 2 ) {
-            exit(0);
+            exit(EXIT_SUCCESS);
         }
     }
 

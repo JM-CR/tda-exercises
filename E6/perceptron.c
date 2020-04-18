@@ -444,3 +444,28 @@ void printNeuron( Neuron_t *neuron ) {
         printf("\n  w%d = %lf", i, neuron->w[i]);
     }
 }
+
+bool testPerceptron( Perceptron_t *perceptron, unsigned int *in ) {
+    // Guards
+    if ( perceptron == NULL || in == NULL ) {
+        return false;
+    }
+
+    // Translate array
+    size_t size = perceptron->inputLayer[0]->totalInput;
+    double *input = calloc(size, sizeof(double));
+    for ( size_t i = 0; i < size; ++i ) {
+        input[i] = in[i];
+    }    
+
+    // Calculations
+    Neuron_t *outNeuron = NULL;
+    if ( perceptron->outputLayer == NULL ) {
+        outNeuron = perceptron->inputLayer[0];
+    } else {
+        outNeuron = perceptron->outputLayer[0];
+    }
+    
+    insertInputs(input, perceptron, outNeuron);
+    return isActive(outNeuron);
+}

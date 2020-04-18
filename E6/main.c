@@ -47,6 +47,8 @@ int main( void ) {
     // Test network
     while ( true ) {
         unsigned int *inputs = askInputs(in);
+        bool active = testPerceptron(perceptron, inputs);
+        printf("\nSalida: %s\n", active ? "1" : "0");
     }
 
     return 0;

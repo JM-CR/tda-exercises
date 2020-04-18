@@ -87,4 +87,13 @@ bool train( Record_t **set, Perceptron_t *perceptron );
  */
 void printNeuron( Neuron_t *neuron );
 
+/**
+ * Tests a perceptron with the given input values.
+ *
+ * @param perceptron Perceptron to test.
+ * @param in Input values.
+ * @return True if the perceptron activates; otherwise, false.
+ */
+bool testPerceptron( Perceptron_t *perceptron, unsigned int *in );
+
 #endif
