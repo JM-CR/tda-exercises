@@ -38,6 +38,35 @@ static void readOption( int *state, int lower, int upper ) {
     *state = option;
 }
 
+/**
+ * Prints the content of a specific layer.
+ *
+ * @param layer Layer to print.
+ * @param name Name of the layer.
+ */
+static void printLayerContent( Neuron_t **layer, char *name ) {
+    // Guard
+    if ( layer == NULL ) {
+        return;
+    }
+
+    // Display
+    printf(
+        "\n------------------------\n\n"
+        "Pesos finales - %s", name
+    );
+    
+    // Translate
+    unsigned int i = 0;
+    Neuron_t *current = layer[i];
+    while ( current != NULL ) {
+        printf("\n\nNeurona %d: ", ++i);
+        printNeuron(current);
+        current = layer[i];
+    }
+    printf("\n");
+}
+
 
 // -----------------------------
 // Public elements
@@ -97,6 +126,17 @@ char *askFile( void ) {
     return files[option - 1];
 }
 
+void globalState( Perceptron_t *perceptron ) {
+    // Guard
+    if ( perceptron == NULL ) {
+        return;
+    }
+
+    // Display
+    printLayerContent(perceptron->inputLayer, "Input layer:");
+    printLayerContent(perceptron->hiddenLayer, "Hidden layer:");
+    printLayerContent(perceptron->outputLayer, "Output layer:");
+}
 
 unsigned int *askInputs( size_t in ) {
     // Display

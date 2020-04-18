@@ -432,3 +432,15 @@ bool train( Record_t **set, Perceptron_t *perceptron ) {
     startTraining(set, perceptron);
     return true;
 }
+
+void printNeuron( Neuron_t *neuron ) {
+    // Guard
+    if ( neuron == NULL ) {
+        return;
+    }   
+
+    // Display
+    for ( unsigned int i = 0; i < neuron->totalInput; ++i ) {
+        printf("\n  w%d = %lf", i, neuron->w[i]);
+    }
+}

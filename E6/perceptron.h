@@ -80,4 +80,11 @@ Record_t **loadSample( const char *filename, size_t in );
  */
 bool train( Record_t **set, Perceptron_t *perceptron );
 
+/**
+ * Prints the weights of a neuron.
+ * 
+ * @param neuron Neuron to print.
+ */
+void printNeuron( Neuron_t *neuron );
+
 #endif

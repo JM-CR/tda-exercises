@@ -41,6 +41,9 @@ int main( void ) {
     int length = sizeof(commands) / sizeof(char *);
     plot(commands, length);
 
+    // Show after values
+    globalState(perceptron);
+
     // Test network
     while ( true ) {
         unsigned int *inputs = askInputs(in);

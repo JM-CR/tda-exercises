@@ -42,6 +42,13 @@ unsigned int askValue( char *text, int lower, int upper );
 char *askFile( void );
 
 /**
+ * Shows the perceptron's values after the training.
+ *
+ * @param perceptron Perceptron to train.
+ */
+void globalState( Perceptron_t *perceptron );
+
+/**
  * Asks to the user the inputs to test the network.
  *
  * @param in Number of inputs to read.
