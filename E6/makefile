@@ -4,7 +4,7 @@
 CFLAGS = -Wall -g
 
 # External libraries
-LIBS = -lm
+LIBS = 
 
 # Pre-defined macros for conditional compilation
 DEFS =  

@@ -20,8 +20,9 @@
 
 /* Constants */
 
-#define N 0.01
-#define THRESHOLD 0.7
+#define N 0.001
+#define THRESHOLD 0.75
+#define TRAINING_CYCLES 5000
 
 /* Types declarations */
 

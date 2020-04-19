@@ -7,7 +7,6 @@
 // System and aplication specific headers
 // ------------------------------------------
 #include <time.h>
-#include <math.h>
 #include <stdio.h>
 #include <string.h>
 #include <stdbool.h>
@@ -21,7 +20,6 @@
 
 /* Private constants */
 
-#define TRAINING_CYCLES 120
 #define GNUPLOT_FILE "error.txt"
 
 /* Private functions */
@@ -158,7 +156,7 @@ static void updateLayerError( Neuron_t **initialLayer, Neuron_t **nextLayer, siz
             totalWeight += current->w[i];
         }
        
-       // Calculation
+        // Calculation
         result += current->w[position] * current->error / totalWeight;
         current = nextLayer[iCur++];
     }
@@ -202,18 +200,38 @@ static void insertInputs( double *in, Perceptron_t *perceptron, Neuron_t *curren
     Neuron_t **iLayer = perceptron->inputLayer;
     Neuron_t **hLayer = perceptron->hiddenLayer;
     Neuron_t **oLayer = perceptron->outputLayer;
-    size_t total = current->totalInput;
 
     // Insert
     if ( oLayer == NULL ) {
+        // One layer
         current->x = in;
     } else if ( hLayer == NULL ) {
-        for ( size_t i = 0; i < total; ++i ) {
+        // Two layers
+        size_t totalInputs = current->totalInput;
+
+        for ( size_t i = 0; i < totalInputs; ++i ) {
             iLayer[i]->x = in;
             current->x[i] = getOutput(iLayer[i]);
         }
     } else {
+        // Three layers
+        unsigned int hCur = 0;
+        Neuron_t *hidden = hLayer[hCur++];
+        size_t totalInputs = hidden->totalInput;
+        size_t totalHiddens = current->totalInput;
 
+        for ( size_t i = 0; i < totalInputs; ++i ) {
+            iLayer[i]->x = in;
+        }
+        while ( hidden != NULL ) {
+            for ( size_t i = 0; i < totalInputs; ++i ) {
+                hidden->x[i] = getOutput(iLayer[i]);
+            }
+            hidden = hLayer[hCur++];
+        }
+        for ( size_t i = 0; i < totalHiddens; ++i ) {
+            current->x[i] = getOutput(hLayer[i]);
+        }
     }
 }
 
@@ -221,27 +239,44 @@ static void insertInputs( double *in, Perceptron_t *perceptron, Neuron_t *curren
  * Calculates the new error values for the layers.
  *
  * @param perceptron Perceptron to train.
- * @param current Neuron in use.
- * @param position Position of the current neuron.
+ * @param position Position of the ouput neuron.
  * @param out Expected value
  */
-static void setNewErrors( Perceptron_t *perceptron, Neuron_t *current, size_t position, double out ) {
+static void setNewErrors( Perceptron_t *perceptron, size_t position, double out ) {
     // Initialize
     Neuron_t **iLayer = perceptron->inputLayer;
     Neuron_t **hLayer = perceptron->hiddenLayer;
     Neuron_t **oLayer = perceptron->outputLayer;
-    size_t total = current->totalInput;
 
     // Update
     if ( oLayer == NULL ) {
+        // One layer
         updateError(iLayer, out, position);
     } else if ( hLayer == NULL ) {
+        // Two layers
+        unsigned int iCur = 0;
+        Neuron_t *input = iLayer[iCur];
+
         updateError(oLayer, out, position);
-        for ( size_t i = 0; i < total; ++i ) {
-            updateLayerError(iLayer, oLayer, i);
+        while ( input != NULL ) {
+            updateLayerError(iLayer, hLayer, iCur);
+            input = iLayer[++iCur];
         }
     } else {
+        // Three layers
+        unsigned int hCur = 0, iCur = 0;
+        Neuron_t *hidden = hLayer[hCur];
+        Neuron_t *input = iLayer[iCur];
 
+        updateError(oLayer, out, position);
+        while ( hidden != NULL ) {
+            updateLayerError(hLayer, oLayer, hCur);
+            hidden = hLayer[++hCur];
+        }
+        while ( input != NULL ) {
+            updateLayerError(iLayer, hLayer, iCur);
+            input = iLayer[++iCur];
+        }
     }
 }
 
@@ -275,7 +310,6 @@ static void setNewWeights( Perceptron_t *perceptron, Neuron_t *current ) {
     // Initialize
     Neuron_t **iLayer = perceptron->inputLayer;
     Neuron_t **hLayer = perceptron->hiddenLayer;
-    Neuron_t **oLayer = perceptron->outputLayer;
     size_t total = current->totalInput;
 
     // Update neuron
@@ -287,7 +321,8 @@ static void setNewWeights( Perceptron_t *perceptron, Neuron_t *current ) {
     if ( hLayer == NULL ) {
         setLayerWeight(iLayer);
     } else {
-
+        setLayerWeight(hLayer);
+        setLayerWeight(iLayer);
     }
 }
 
@@ -325,9 +360,12 @@ static void startTraining( Record_t **set, Perceptron_t *perceptron ) {
                 }
 
                 // Update values
-                setNewErrors(perceptron, currentNeuron, iNeu, currentRecord->out);
+                setNewErrors(perceptron, iNeu, currentRecord->out);
                 setNewWeights(perceptron, currentNeuron);
-                lastError = totalError += fabs(currentNeuron->error);
+
+                // Calculate training error | GNUPLOT
+                totalError += currentNeuron->error;
+                lastError = totalError;
 
                 // Next cycle
                 currentRecord = set[++iRec];
@@ -337,10 +375,15 @@ static void startTraining( Record_t **set, Perceptron_t *perceptron ) {
             currentNeuron = oLayer == NULL ? iLayer[++iNeu] : oLayer[++iNeu];
         }
 
-        // Save values for the graph
+        // Save training error | GNUPLOT
         data[0] = i;
         data[1] = totalError == 0 ? lastError : totalError;
         saveState(GNUPLOT_FILE, data, 2);
+
+        // Quit training
+        if ( totalError <= 0.25 && totalError >= -0.25 && i >= 10 ) {
+            return;
+        }
     }
 }
 
@@ -437,7 +480,7 @@ void printNeuron( Neuron_t *neuron ) {
     // Guard
     if ( neuron == NULL ) {
         return;
-    }   
+    }
 
     // Display
     for ( unsigned int i = 0; i < neuron->totalInput; ++i ) {
@@ -456,7 +499,7 @@ bool testPerceptron( Perceptron_t *perceptron, unsigned int *in ) {
     double *input = calloc(size, sizeof(double));
     for ( size_t i = 0; i < size; ++i ) {
         input[i] = in[i];
-    }    
+    }
 
     // Calculations
     Neuron_t *outNeuron = NULL;
