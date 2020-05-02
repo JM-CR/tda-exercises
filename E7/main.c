@@ -5,14 +5,21 @@
 // ------------------------------------------
 // System and aplication specific headers
 // ------------------------------------------
-#include <stdio.h>
-#include "calculator.h"
+#include "interface.h"
 
 int main( void ) {
-    double n1 = 3.0;
-    double n2 = 4.0;
-    double result = operate(n1, n2, ADD);
-    printf("%.2lf\n", result);
+    // Ask operation type
+    initialGuide();
+    printMenu();
+    Operation_t type = askMenuValue("Ingresa el tipo ", 1, 4);
+
+    // Ask numbers
+    double n1 = askInputValue("Ingresa el primer número ");
+    double n2 = askInputValue("Ingresa el segundo número ");
+
+    // Result
+    double output = operate(n1, n2, type);
+    printResult(output);
 
     return 0;
 }
