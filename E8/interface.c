@@ -78,14 +78,14 @@ double askInputValue( char *text ) {
     return value;
 }
 
-Operation_t askMenuValue( char *text, int lower, int upper ) {
+State_t askMenuValue( char *text, int lower, int upper ) {
     // Display
     printf("\n%s", text);
     int option;
     readOption(&option, lower, upper);
 
     // Translate
-    Operation_t type[] = { ADD, SUBSTRACT, MULTIPLY, DIVIDE };
+    State_t type[] = { ADD, SUBSTRACT, MULTIPLY, DIVIDE };
     return type[option - 1];
 }
 

@@ -13,7 +13,7 @@ DEFS =
 BIN = main
 
 # Object files from which $BIN depends
-OBJS = state_machine.o interface.o
+OBJS = state_machine.o interface.o calculator.o
 
 # This default rule compiles the executable program
 $(BIN): $(OBJS) $(BIN).c

@@ -17,11 +17,11 @@
 
 /* Types declarations */
 
-enum operation {
-    ADD, SUBSTRACT, MULTIPLY, DIVIDE
+enum state {
+    ADD, SUBSTRACT, MULTIPLY, DIVIDE, NUM_STATES
 };
 
-typedef enum operation Operation_t;
+typedef enum state State_t;
 
 /* Function prototypes */
 
@@ -30,9 +30,9 @@ typedef enum operation Operation_t;
  *
  * @param n1 First number.
  * @param n2 Second number.
- * @param type Operation.
+ * @param type State to test.
  * @return Result.
  */
- double operate( double n1, double n2, Operation_t type );
+ double run( double n1, double n2, State_t type );
 
 #endif

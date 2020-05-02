@@ -7,6 +7,7 @@
 // System and aplication specific headers
 // ------------------------------------------
 #include "state_machine.h"
+#include "calculator.h"
 
 
 // -----------------------------
@@ -15,50 +16,6 @@
 
 /* Private functions */
 
-/**
- * Calculates the sum between two numbers.
- *
- * @param n1 First number.
- * @param n2 Second number.
- * @return Result.
- */
-static double add( double n1, double n2 ) {
-    return n1 + n2;
-}
-
-/**
- * Calculates the substraction between two numbers.
- *
- * @param n1 Minuend.
- * @param n2 Subtrahend.
- * @return Result.
- */
-static double substract( double n1, double n2 ) {
-    return n1 - n2;
-}
-
-/**
- * Calculates the multiplication between two numbers.
- *
- * @param n1 First number.
- * @param n2 Second number.
- * @return Result.
- */
-static double multiply( double n1, double n2 ) {
-    return n1 * n2;
-}
-
-/**
- * Calculates the division between two numbers.
- *
- * @param n1 Dividend.
- * @param n2 Divisor.
- * @return Result.
- */
-static double divide( double n1, double n2 ) {
-    return n1 / n2;
-}
-
 
 // -----------------------------
 // Public elements
@@ -66,7 +23,7 @@ static double divide( double n1, double n2 ) {
 
 /* Implementation of the public functions */
 
-double operate( double n1, double n2, Operation_t type ) {
+double run( double n1, double n2, State_t type ) {
     double (* calc[])(double, double) = { add, substract, multiply, divide };
     return calc[type](n1, n2);
 }

@@ -44,7 +44,7 @@ double askInputValue( char *text );
  * @param upper Maximum value.
  * @return Chosen option.
  */
-Operation_t askMenuValue( char *text, int lower, int upper );
+State_t askMenuValue( char *text, int lower, int upper );
 
 /**
  * Prints the result of an operation.
