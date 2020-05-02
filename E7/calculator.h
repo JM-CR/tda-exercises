@@ -15,16 +15,24 @@
 // Public interface
 // -----------------------------
 
-/* Constants */
-
 /* Types declarations */
 
-/* Global variables */
+enum operation {
+    ADD, SUBSTRACT, MULTIPLY, DIVIDE
+};
+
+typedef enum operation Operation_t;
 
 /* Function prototypes */
 
 /**
- * Function's documentation.
+ * Perfoms an arithmetic operation between two numbers.
+ *
+ * @param n1 First number.
+ * @param n2 Second number.
+ * @param type Operation.
+ * @return Result.
  */
+ double operate( double n1, double n2, Operation_t type );
 
 #endif
