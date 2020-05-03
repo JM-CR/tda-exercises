@@ -6,15 +6,22 @@
 // ------------------------------------------
 // System and aplication specific headers
 // ------------------------------------------
+#include "interface.h"
 #include "state_machine.h"
-#include "calculator.h"
 
 
 // -----------------------------
 // Private elements
 // -----------------------------
 
-/* Private functions */
+/* Private global variables */
+
+static const StateMachine_t stateMachine[NUM_STATES] = {
+    { ADD, add },
+    { SUBSTRACT, substract },
+    { MULTIPLY, multiply },
+    { DIVIDE, divide }
+};
 
 
 // -----------------------------
@@ -23,7 +30,25 @@
 
 /* Implementation of the public functions */
 
-double run( double n1, double n2, State_t type ) {
-    double (* calc[])(double, double) = { add, substract, multiply, divide };
-    return calc[type](n1, n2);
+void startMachine( State_t *state ) {
+    // Initialize
+    State_t previous_state;
+
+    // Start
+    for (;;) {
+        // Watch-dog
+        previous_state = *state;
+        if ( *state > NUM_STATES ) {
+            *state = previous_state;
+        } else {
+            // Ask numbers
+            double n1 = askInputValue("Ingresa el primer número ");
+            double n2 = askInputValue("Ingresa el segundo número ");
+
+            // Call calculator
+            double result = stateMachine[*state].calculate(n1, n2, state);
+            printResult(result);
+            break;
+        }
+    }
 }

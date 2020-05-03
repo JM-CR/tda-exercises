@@ -44,6 +44,10 @@ static void readOption( int *state, int lower, int upper ) {
 
 /* Implementation of the public functions */
 
+void clearScreen( void ) {
+    printf("\e[2J\e[H");
+}
+
 void initialGuide( void ) {
     printf(
         "\nCalculadora con máquina de estados.\n"
@@ -93,6 +97,11 @@ void printResult( double result ) {
     // Display
     printf(
         "\n------------------------\n\n"
-        "Resultado = %.2lf\n\n", result
+        "Resultado = %.2lf\n\n"
+        "Enter para continuar...", result
     );
+
+    // Enter to continue
+    getchar();
+    getchar();
 }

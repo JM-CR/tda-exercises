@@ -9,6 +9,7 @@
 // -----------------------------
 // System headers
 // -----------------------------
+#include "calculator.h"
 
 
 // -----------------------------
@@ -17,22 +18,20 @@
 
 /* Types declarations */
 
-enum state {
-    ADD, SUBSTRACT, MULTIPLY, DIVIDE, NUM_STATES
+struct stateMachine {
+    State_t currentState;
+    double (* calculate)(double, double, State_t *);
 };
 
-typedef enum state State_t;
+typedef struct stateMachine StateMachine_t;
 
 /* Function prototypes */
 
 /**
- * Perfoms an arithmetic operation between two numbers.
+ * Starts the machine.
  *
- * @param n1 First number.
- * @param n2 Second number.
- * @param type State to test.
- * @return Result.
+ * @param type Initial state.
  */
- double run( double n1, double n2, State_t type );
+void startMachine( State_t *state );
 
 #endif

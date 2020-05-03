@@ -9,7 +9,7 @@
 // -----------------------------
 // System headers
 // -----------------------------
-#include "state_machine.h"
+#include "calculator.h"
 
 
 // -----------------------------
@@ -17,6 +17,11 @@
 // -----------------------------
 
 /* Function prototypes */
+
+/**
+ * Clears the current window.
+ */
+void clearScreen( void );
 
 /**
  * A little description about the program's behaviour.

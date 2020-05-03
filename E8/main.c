@@ -5,21 +5,22 @@
 // ------------------------------------------
 // System and aplication specific headers
 // ------------------------------------------
+#include <stdbool.h>
 #include "interface.h"
+#include "state_machine.h"
 
 int main( void ) {
-    // Ask operation type
+    // Iterate
     initialGuide();
-    printMenu();
-    State_t type = askMenuValue("Ingresa el tipo ", 1, 4);
+    do {
+        // User interaction
+        printMenu();
+        State_t type = askMenuValue("Ingresa el tipo ", 1, 4);
 
-    // Ask numbers
-    double n1 = askInputValue("Ingresa el primer número ");
-    double n2 = askInputValue("Ingresa el segundo número ");
-
-    // Result
-    double output = run(n1, n2, type);
-    printResult(output);
+        // Run
+        startMachine(&type);
+        clearScreen();
+    } while ( true );
 
     return 0;
 }
